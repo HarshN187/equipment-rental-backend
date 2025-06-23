@@ -21,6 +21,7 @@ import { CreateAddressDto } from './dto/create-address.dto';
 import { addAddressService } from './services/addUserAddress.service';
 import { DeleteUserService } from './services/deleteUser.service';
 import { DeleteAddressService } from './services/deleteAddress.service';
+import { GetUserPaginationService } from './services/getUserPagination.service';
 
 @Controller('user')
 export class UserController {
@@ -33,6 +34,7 @@ export class UserController {
     private readonly addAddressService: addAddressService,
     private readonly deleteUserService: DeleteUserService,
     private readonly deleteAddressService: DeleteAddressService,
+    private readonly getUserPagination: GetUserPaginationService,
   ) {}
 
   @Post()
@@ -58,6 +60,14 @@ export class UserController {
   @Get('/:id/address')
   getUserAddresses(@Param('id') userId: string): Promise<AddressDto[]> {
     return this.getUserAddressService.getUserAddresses(+userId);
+  }
+
+  @Get('/pagination/:perPage/:page')
+  getUserWithPagination(
+    @Param('perPage') perPage: string,
+    @Param('page') page: string,
+  ): Promise<UserDto[]> {
+    return this.getUserPagination.getUserPagination(+page, +perPage);
   }
 
   @Patch()
