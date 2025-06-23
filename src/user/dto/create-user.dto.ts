@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsInt, IsOptional, IsString } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
 
 export class CreateUserDto {
@@ -9,22 +9,31 @@ export class CreateUserDto {
   @IsInt()
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'name',
+  })
   @AutoMap()
   @IsString()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'name@gmail.com',
+  })
   @AutoMap()
-  @IsString()
+  @IsEmail()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    minLength: 10,
+    example: '99887766768',
+  })
   @AutoMap()
   @IsString()
   phone: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: '123',
+  })
   @IsString()
   @AutoMap()
   password: string;

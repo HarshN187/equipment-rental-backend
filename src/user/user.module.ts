@@ -13,6 +13,8 @@ import { User } from './entities/user.entity';
 import { AddressRepository } from './repository/address.repository';
 import { GetUserAddressesService } from './services/getUserAddresses.service';
 import { GetAllUserService } from './services/getAllUsers.service';
+import { EditUserService } from './services/updateUser.service';
+import { mapperProfile } from 'src/common/profiles/mapper.profile';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { GetAllUserService } from './services/getAllUsers.service';
     GetUserByIdService,
     GetUserAddressesService,
     GetAllUserService,
+    EditUserService,
+    mapperProfile,
   ],
   exports: [UserRepository, AddressRepository],
 })

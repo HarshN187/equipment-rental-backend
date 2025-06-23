@@ -27,4 +27,8 @@ export class AddressRepository extends BaseRepo<
   ) {
     super(addressRepository, mapper, logger, Address, AddressDto);
   }
+
+  public override get idColumnName(): keyof Address {
+    return 'address_id';
+  }
 }
