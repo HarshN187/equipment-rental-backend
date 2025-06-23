@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RentalsModule } from './rentals/rentals.module';
@@ -17,6 +17,10 @@ import { Address } from './user/entities/address.entity';
 import { Equipment } from './equipment/entities/equipment.entity';
 import { Category } from './equipment/entities/category.entity';
 import { Rental } from './rentals/entities/rental.entity';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
+import { VeryfyTokenMiddleware } from './common/middleware/verifyToken.middleware';
 
 @Module({
   imports: [
@@ -30,7 +34,7 @@ import { Rental } from './rentals/entities/rental.entity';
     }),
     JwtModule.register({
       secret: 'hard!to-guess_secret',
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '24h' },
     }),
     LoggerModule.forRoot({
       pinoHttp: {
@@ -47,8 +51,13 @@ import { Rental } from './rentals/entities/rental.entity';
     UserModule,
     EquipmentModule,
     RentalsModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AuthController],
+  providers: [AppService, AuthService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // consumer.apply(VeryfyTokenMiddleware).forRoutes('user');
+  }
+}

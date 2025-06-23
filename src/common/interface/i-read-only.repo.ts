@@ -6,7 +6,7 @@ export interface IReadOnlyRepo<
   TPageableFilter = PageableFilter<T, TKey>,
   TFilter = Filter<T, TKey>,
 > {
-  getAsync(pk: TKey): Promise<T | null>;
+  getAsync(pk: TKey): Promise<T | null | undefined>;
   allAsync(filter?: TFilter): Promise<T[]>;
   pagedAsync(filter?: TPageableFilter): Promise<IPageable<T>>;
   countAsync(filterObj?: TFilter): Promise<number>;

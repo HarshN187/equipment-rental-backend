@@ -3,7 +3,7 @@ import { includes, keys } from './utils';
 import { Type } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
 import { ObjectLiteral, Repository } from 'typeorm';
-import { Filter, IFilterBase, IPageable, PageableFilter } from './filtering';
+import { Filter, PageableFilter } from './filtering';
 import { BaseReadOnlyRepo } from './base-read-only.repo';
 import { DbException } from './exceptions';
 import { IBaseRepo } from './interface/i-base.repo';
@@ -18,8 +18,6 @@ export abstract class BaseRepo<
   extends BaseReadOnlyRepo<TEntity, T, TKey, TPageableFilter, TFilter>
   implements IBaseRepo<T, TKey, TPageableFilter, TFilter>
 {
-  // internalRepo: any;
-  // mapToModel: any;
   constructor(
     internalRepo: Repository<TEntity>,
     mapper: Mapper,
@@ -36,9 +34,7 @@ export abstract class BaseRepo<
 
   public async createAsync(entry: T): Promise<T> {
     try {
-      console.log(entry);
       const entity = this.mapToEntity(entry);
-      console.log(entity);
       await this.internalRepo.save(entity);
       return this.mapToModel(entity);
     } catch (ex) {

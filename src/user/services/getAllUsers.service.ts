@@ -8,7 +8,7 @@ export class GetAllUserService {
   constructor(private readonly userRepo: UserRepository) {}
 
   async getAllUser(): Promise<UserDto[]> {
-    const result = await this.userRepo.allAsync();
+    const result = await this.userRepo.allAsync({});
     if (!result) {
       throw new DbException('data not found');
     }

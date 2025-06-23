@@ -8,6 +8,7 @@ async function bootstrap() {
 
   // ??
   app.useGlobalInterceptors(new ExceptionGlobalExceptionInterceptor());
+
   const options = new DocumentBuilder()
     .setTitle('Assessment Api')
     .setDescription('API description')

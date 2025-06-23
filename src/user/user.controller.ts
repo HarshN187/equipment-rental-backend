@@ -22,8 +22,10 @@ import { addAddressService } from './services/addUserAddress.service';
 import { DeleteUserService } from './services/deleteUser.service';
 import { DeleteAddressService } from './services/deleteAddress.service';
 import { GetUserPaginationService } from './services/getUserPagination.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('user')
+// @ApiBearerAuth()
 export class UserController {
   constructor(
     private readonly getUserByIdService: GetUserByIdService,
