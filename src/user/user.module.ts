@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Address } from './entities/address.entity';
 import { User } from './entities/user.entity';
 import { AddressRepository } from './repository/address.repository';
+import { GetUserAddressesService } from './services/getUserAddresses.service';
 
 @Module({
   imports: [
@@ -39,7 +40,12 @@ import { AddressRepository } from './repository/address.repository';
     }),
   ],
   controllers: [UserController],
-  providers: [GetUserByIdService, UserRepository, AddressRepository],
+  providers: [
+    GetUserByIdService,
+    GetUserAddressesService,
+    UserRepository,
+    AddressRepository,
+  ],
   exports: [UserRepository, AddressRepository],
 })
 export class UserModule {}
