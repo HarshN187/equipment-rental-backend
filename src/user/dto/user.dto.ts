@@ -4,7 +4,7 @@ import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class UserDto {
   @AutoMap()
-  id: number;
+  user_id: number;
 
   @AutoMap()
   name: string;

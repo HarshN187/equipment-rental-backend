@@ -36,7 +36,9 @@ export abstract class BaseRepo<
 
   public async createAsync(entry: T): Promise<T> {
     try {
+      console.log(entry);
       const entity = this.mapToEntity(entry);
+      console.log(entity);
       await this.internalRepo.save(entity);
       return this.mapToModel(entity);
     } catch (ex) {

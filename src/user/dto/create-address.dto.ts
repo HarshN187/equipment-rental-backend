@@ -9,7 +9,7 @@ export class CreateAddressDto {
   @AutoMap()
   @ApiProperty()
   @IsInt()
-  address_id: number;
+  id: number;
 
   @AutoMap()
   @ApiProperty()
@@ -38,6 +38,5 @@ export class CreateAddressDto {
 
   @AutoMap()
   @ApiProperty()
-  @IsOptional()
-  user: UserDto;
+  user: number;
 }

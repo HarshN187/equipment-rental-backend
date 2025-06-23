@@ -2,12 +2,10 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { AutoMap } from '@automapper/classes';
 import { UserDto } from './user.dto';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class AddressDto {
   @AutoMap()
-  address_id: number;
+  id: number;
 
   @AutoMap()
   address: string;

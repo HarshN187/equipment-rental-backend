@@ -7,7 +7,7 @@ export class CreateUserDto {
   @IsOptional()
   @AutoMap()
   @IsInt()
-  id: number;
+  user_id: number;
 
   @ApiProperty({
     example: 'name',
