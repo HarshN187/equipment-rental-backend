@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { DbException } from 'src/common/exceptions';
-import { UserRepository } from 'src/user/repository/user.repository';
 import { AddressRepository } from '../repository/address.repository';
 import { AddressDto } from '../dto/address.dto';
 

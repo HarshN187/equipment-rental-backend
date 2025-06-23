@@ -15,7 +15,7 @@ import { AutoMap } from '@automapper/classes';
 export class User {
   @AutoMap()
   @PrimaryGeneratedColumn()
-  id: number;
+  user_id: number;
 
   @AutoMap()
   @Column()
