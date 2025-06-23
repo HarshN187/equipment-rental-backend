@@ -3,7 +3,7 @@ import { IsEmail, IsInt, IsOptional, IsString } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
 
 export class CreateUserDto {
-  @ApiProperty()
+  // @ApiProperty()
   @IsOptional()
   @AutoMap()
   @IsInt()

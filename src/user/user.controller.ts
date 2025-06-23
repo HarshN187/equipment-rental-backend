@@ -19,6 +19,8 @@ import { EditUserService } from './services/updateUser.service';
 import { CreateUserService } from './services/createUser.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { addAddressService } from './services/addUserAddress.service';
+import { DeleteUserService } from './services/deleteUser.service';
+import { DeleteAddressService } from './services/deleteAddress.service';
 
 @Controller('user')
 export class UserController {
@@ -29,15 +31,17 @@ export class UserController {
     private readonly editUserService: EditUserService,
     private readonly createUserService: CreateUserService,
     private readonly addAddressService: addAddressService,
+    private readonly deleteUserService: DeleteUserService,
+    private readonly deleteAddressService: DeleteAddressService,
   ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
     return this.createUserService.createUser(createUserDto);
   }
 
   @Post('address')
-  addAddress(@Body() createAddressDto: CreateAddressDto) {
+  addAddress(@Body() createAddressDto: CreateAddressDto): Promise<AddressDto> {
     return this.addAddressService.createAddress(createAddressDto);
   }
 
@@ -62,7 +66,12 @@ export class UserController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    // return this.userService.remove(+id);
+  deleteUser(@Param('id') id: string) {
+    return this.deleteUserService.deleteUser(+id);
+  }
+
+  @Delete('address/:id')
+  deleteAddress(@Param('id') id: string) {
+    return this.deleteAddressService.deleteAddress(+id);
   }
 }
