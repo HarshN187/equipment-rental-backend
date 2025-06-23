@@ -19,4 +19,16 @@ export class UserRepository extends BaseRepo<User, UserDto, number, {}, {}> {
   ) {
     super(userRepository, mapper, logger, User, UserDto);
   }
+
+  public override get softDeleteEnabled(): boolean {
+    return true;
+  }
+
+  public override get idColumnName(): keyof User {
+    return 'user_id';
+  }
+
+  public override get softDeleteColumnName(): keyof User {
+    return 'deleted_at';
+  }
 }

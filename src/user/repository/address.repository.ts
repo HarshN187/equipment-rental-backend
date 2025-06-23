@@ -5,8 +5,6 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { PinoLogger } from 'nestjs-pino';
 import { BaseRepo } from '../../common/base.repo';
-import { User } from 'src/user/entities/user.entity';
-import { UserDto } from 'src/user/dto/user.dto';
 import { Address } from 'src/user/entities/address.entity';
 import { AddressDto } from 'src/user/dto/address.dto';
 
@@ -26,5 +24,13 @@ export class AddressRepository extends BaseRepo<
     readonly logger: PinoLogger,
   ) {
     super(addressRepository, mapper, logger, Address, AddressDto);
+  }
+
+  public override get softDeleteEnabled(): boolean {
+    return true;
+  }
+
+  public override get softDeleteColumnName(): keyof Address {
+    return 'deleted_at';
   }
 }
