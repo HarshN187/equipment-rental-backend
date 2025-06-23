@@ -34,7 +34,7 @@ export abstract class BaseRepo<
     return true;
   }
 
-  public async createAsync(entry): Promise<T> {
+  public async createAsync(entry: T): Promise<T> {
     try {
       const entity = this.mapToEntity(entry);
       await this.internalRepo.save(entity);
@@ -45,7 +45,7 @@ export abstract class BaseRepo<
     }
   }
 
-  public async updateAsync(entry): Promise<T> {
+  public async updateAsync(entry: T): Promise<T> {
     try {
       const entity: TEntity = this.mapToEntity(entry);
       if (includes(keys(entity), 'updatedAt') && this.autoUpdatedAtEnabled) {
@@ -75,7 +75,7 @@ export abstract class BaseRepo<
     }
   }
 
-  protected mapToEntity(entry): TEntity {
+  protected mapToEntity(entry: T): TEntity {
     return this.internalRepo.create(entry as unknown as TEntity);
   }
 }

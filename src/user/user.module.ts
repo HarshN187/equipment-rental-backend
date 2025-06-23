@@ -12,6 +12,7 @@ import { Address } from './entities/address.entity';
 import { User } from './entities/user.entity';
 import { AddressRepository } from './repository/address.repository';
 import { GetUserAddressesService } from './services/getUserAddresses.service';
+import { GetAllUserService } from './services/getAllUsers.service';
 
 @Module({
   imports: [
@@ -41,10 +42,11 @@ import { GetUserAddressesService } from './services/getUserAddresses.service';
   ],
   controllers: [UserController],
   providers: [
-    GetUserByIdService,
-    GetUserAddressesService,
     UserRepository,
     AddressRepository,
+    GetUserByIdService,
+    GetUserAddressesService,
+    GetAllUserService,
   ],
   exports: [UserRepository, AddressRepository],
 })
