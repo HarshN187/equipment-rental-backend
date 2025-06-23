@@ -15,6 +15,8 @@ import { GetUserAddressesService } from './services/getUserAddresses.service';
 import { GetAllUserService } from './services/getAllUsers.service';
 import { EditUserService } from './services/updateUser.service';
 import { mapperProfile } from 'src/common/profiles/mapper.profile';
+import { CreateUserService } from './services/createUser.service';
+import { addAddressService } from './services/addUserAddress.service';
 
 @Module({
   imports: [
@@ -51,6 +53,8 @@ import { mapperProfile } from 'src/common/profiles/mapper.profile';
     GetAllUserService,
     EditUserService,
     mapperProfile,
+    CreateUserService,
+    addAddressService,
   ],
   exports: [UserRepository, AddressRepository],
 })

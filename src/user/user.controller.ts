@@ -16,6 +16,9 @@ import { AddressDto } from './dto/address.dto';
 import { UserDto } from './dto/user.dto';
 import { GetAllUserService } from './services/getAllUsers.service';
 import { EditUserService } from './services/updateUser.service';
+import { CreateUserService } from './services/createUser.service';
+import { CreateAddressDto } from './dto/create-address.dto';
+import { addAddressService } from './services/addUserAddress.service';
 
 @Controller('user')
 export class UserController {
@@ -24,12 +27,18 @@ export class UserController {
     private readonly getUserAddressService: GetUserAddressesService,
     private readonly getAllUserService: GetAllUserService,
     private readonly editUserService: EditUserService,
+    private readonly createUserService: CreateUserService,
+    private readonly addAddressService: addAddressService,
   ) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    // return this.userService.create(createUserDto);
-    return '';
+    return this.createUserService.createUser(createUserDto);
+  }
+
+  @Post('address')
+  addAddress(@Body() createAddressDto: CreateAddressDto) {
+    return this.addAddressService.createAddress(createAddressDto);
   }
 
   @Get()
@@ -48,7 +57,7 @@ export class UserController {
   }
 
   @Patch()
-  updateUser(@Body() updateUserDto: UpdateUserDto) {
+  updateUser(@Body() updateUserDto: UpdateUserDto): Promise<UserDto> {
     return this.editUserService.editUser(updateUserDto);
   }
 
