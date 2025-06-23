@@ -12,6 +12,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUserByIdService } from './services/getUserById.service';
 import { GetUserAddressesService } from './services/getUserAddresses.service';
+import { AddressDto } from './dto/address.dto';
+import { UserDto } from './dto/user.dto';
 
 @Controller('user')
 export class UserController {
@@ -33,12 +35,12 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') userId: string) {
+  findOne(@Param('id') userId: string): Promise<UserDto> {
     return this.getUserByIdService.getUserById(+userId);
   }
 
   @Get('/:id/address')
-  getUserAddresses(@Param('id') userId: string) {
+  getUserAddresses(@Param('id') userId: string): Promise<AddressDto[]> {
     return this.getUserAddressService.getUserAddresses(+userId);
   }
 
