@@ -37,19 +37,4 @@ export class CreateUserDto {
   @IsString()
   @AutoMap()
   password: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @AutoMap()
-  created_at: Date;
-
-  @ApiProperty()
-  @AutoMap()
-  @IsOptional()
-  updated_at: Date;
-
-  @ApiProperty()
-  @IsOptional()
-  @AutoMap()
-  deleted_at: Date;
 }
