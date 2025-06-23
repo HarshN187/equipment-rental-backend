@@ -15,6 +15,7 @@ import { GetUserAddressesService } from './services/getUserAddresses.service';
 import { AddressDto } from './dto/address.dto';
 import { UserDto } from './dto/user.dto';
 import { GetAllUserService } from './services/getAllUsers.service';
+import { EditUserService } from './services/updateUser.service';
 
 @Controller('user')
 export class UserController {
@@ -22,6 +23,7 @@ export class UserController {
     private readonly getUserByIdService: GetUserByIdService,
     private readonly getUserAddressService: GetUserAddressesService,
     private readonly getAllUserService: GetAllUserService,
+    private readonly editUserService: EditUserService,
   ) {}
 
   @Post()
@@ -31,12 +33,12 @@ export class UserController {
   }
 
   @Get()
-  findAll(): Promise<UserDto[]> {
+  findAllUser(): Promise<UserDto[]> {
     return this.getAllUserService.getAllUser();
   }
 
   @Get(':id')
-  findOne(@Param('id') userId: string): Promise<UserDto> {
+  findOneUser(@Param('id') userId: string): Promise<UserDto> {
     return this.getUserByIdService.getUserById(+userId);
   }
 
@@ -45,9 +47,9 @@ export class UserController {
     return this.getUserAddressService.getUserAddresses(+userId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    // return this.userService.update(+id, updateUserDto);
+  @Patch()
+  updateUser(@Body() updateUserDto: UpdateUserDto) {
+    return this.editUserService.editUser(updateUserDto);
   }
 
   @Delete(':id')
