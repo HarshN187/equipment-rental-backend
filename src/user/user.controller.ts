@@ -14,12 +14,14 @@ import { GetUserByIdService } from './services/getUserById.service';
 import { GetUserAddressesService } from './services/getUserAddresses.service';
 import { AddressDto } from './dto/address.dto';
 import { UserDto } from './dto/user.dto';
+import { GetAllUserService } from './services/getAllUsers.service';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly getUserByIdService: GetUserByIdService,
     private readonly getUserAddressService: GetUserAddressesService,
+    private readonly getAllUserService: GetAllUserService,
   ) {}
 
   @Post()
@@ -29,9 +31,8 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    // return this.userService.findAll();
-    return 'iuedhjeu';
+  findAll(): Promise<UserDto[]> {
+    return this.getAllUserService.getAllUser();
   }
 
   @Get(':id')
