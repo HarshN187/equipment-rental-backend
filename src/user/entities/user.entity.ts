@@ -15,7 +15,7 @@ import { AutoMap } from '@automapper/classes';
 export class User {
   @AutoMap()
   @PrimaryGeneratedColumn()
-  address_id: number;
+  id: number;
 
   @AutoMap()
   @Column()
@@ -40,7 +40,7 @@ export class User {
   @AutoMap()
   @UpdateDateColumn()
   updated_at: Date;
-  
+
   @AutoMap()
   @DeleteDateColumn()
   deleted_at: Date;

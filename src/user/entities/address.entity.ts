@@ -6,7 +6,7 @@ import { AutoMap } from '@automapper/classes';
 export class Address {
   @AutoMap()
   @PrimaryGeneratedColumn()
-  id: number;
+  address_id: number;
 
   @AutoMap()
   @Column()
