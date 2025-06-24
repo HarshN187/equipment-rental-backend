@@ -75,7 +75,32 @@ export abstract class BaseReadOnlyRepo<
       }
       const key =
         typeof pk === 'object' ? { ...pk } : { [this.idColumnName]: pk };
+
       const e: TEntity | null = await this.internalRepo.findOneBy(key as any);
+      if (e != null && this.isDeleted(e)) {
+        return null;
+      }
+      if (e != null) return this.mapToModel(e);
+    } catch (ex) {
+      this.logger.error(ex);
+      throw new DbException(ex);
+    }
+  }
+
+  public async getAsyncWithJoin(
+    pk: TKey,
+    relation,
+  ): Promise<T | null | undefined> {
+    try {
+      if (isNil(pk)) {
+        throw new ArgumentNilException('');
+      }
+      const key =
+        typeof pk === 'object' ? { ...pk } : { [this.idColumnName]: pk };
+      const e: TEntity | null = await this.internalRepo.findOneBy({
+        ...(key as any),
+        relation: relation,
+      });
       if (e != null && this.isDeleted(e)) {
         return null;
       }
@@ -89,6 +114,7 @@ export abstract class BaseReadOnlyRepo<
   public async allAsync(filterObj: TFilter): Promise<T[]> {
     try {
       const opts = this.createFilterOpts(filterObj);
+
       const es = await this.internalRepo.find(opts);
       return this.mapToModelArray(es);
     } catch (ex) {
@@ -132,6 +158,18 @@ export abstract class BaseReadOnlyRepo<
       const result = await this.internalRepo.findOne(opts);
       const exists = !isNilOrEmpty(result);
       return exists;
+    } catch (ex) {
+      this.logger.error(ex);
+      throw new DbException(ex);
+    }
+  }
+
+  public async allAsyncWithJoin(filterObj: TFilter, relation): Promise<T[]> {
+    try {
+      const opts = this.createFilterOpts(filterObj);
+
+      const es = await this.internalRepo.find({ ...opts, relations: relation });
+      return this.mapToModelArray(es);
     } catch (ex) {
       this.logger.error(ex);
       throw new DbException(ex);
