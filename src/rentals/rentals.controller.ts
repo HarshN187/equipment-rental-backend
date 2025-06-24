@@ -18,6 +18,7 @@ import { RentalDto } from './dto/rental.dto';
 import { AddRentalService } from './services/addRental.service';
 import { EditRentalService } from './services/editRental.service';
 import { RemoveRentalService } from './services/removeRental.service';
+import { GetRentalsPaginateService } from './services/getPaginateRentals.service';
 
 @Controller('rentals')
 export class RentalsController {
@@ -28,6 +29,7 @@ export class RentalsController {
     private readonly addRentalService: AddRentalService,
     private readonly editRentalService: EditRentalService,
     private readonly removeRentalService: RemoveRentalService,
+    private readonly getRentalsPaginateService: GetRentalsPaginateService,
   ) {}
 
   @Post()
@@ -65,6 +67,14 @@ export class RentalsController {
   @Delete(':id')
   removeRental(@Param('id') id: string): Promise<boolean> {
     return this.removeRentalService.removeRental(+id);
+  }
+
+  @Get('/paginate/:page/:perPage')
+  getRentalPaginate(
+    @Param('page') page: string,
+    @Param('perPage') perPage: string,
+  ): Promise<RentalDto[]> {
+    return this.getRentalsPaginateService.getPaginateRentals(+page, +perPage);
   }
 
   @Get(':id')
