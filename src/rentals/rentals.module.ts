@@ -13,6 +13,7 @@ import { EquipmentRepository } from 'src/equipment/repository/equipment.reposito
 import { AddRentalService } from './services/addRental.service';
 import { EditRentalService } from './services/editRental.service';
 import { RemoveRentalService } from './services/removeRental.service';
+import { GetRentalsPaginateService } from './services/getPaginateRentals.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Rental, User, Equipment])],
@@ -27,6 +28,7 @@ import { RemoveRentalService } from './services/removeRental.service';
     AddRentalService,
     EditRentalService,
     RemoveRentalService,
+    GetRentalsPaginateService,
   ],
 })
 export class RentalsModule {}
