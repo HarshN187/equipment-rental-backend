@@ -12,6 +12,7 @@ import { GetAllCategoryService } from './services/getAllCategory.service';
 import { AddEquipmentService } from './services/addEquipment.service';
 import { editEquipmentService } from './services/editEquipment.service';
 import { RemoveEquipmentService } from './services/removeEquipment.service';
+import { GetPaginateEquipmentService } from './services/getPaginatEquipment.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Equipment, Category])],
@@ -26,6 +27,7 @@ import { RemoveEquipmentService } from './services/removeEquipment.service';
     AddEquipmentService,
     editEquipmentService,
     RemoveEquipmentService,
+    GetPaginateEquipmentService,
   ],
   exports: [EquipmentRepository, CategoryRepository],
 })
