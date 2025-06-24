@@ -14,6 +14,8 @@ import { getAllRentalService } from './services/getAllRentals.service';
 import { getRentalByIdService } from './services/getRentalById.service';
 import { GetRentalsByFilterService } from './services/getRentalByFilter.service';
 import { ApiQuery } from '@nestjs/swagger';
+import { RentalDto } from './dto/rental.dto';
+import { AddRentalService } from './services/addRental.service';
 
 @Controller('rentals')
 export class RentalsController {
@@ -21,15 +23,16 @@ export class RentalsController {
     private readonly getAllRentalService: getAllRentalService,
     private readonly getRentalByIdService: getRentalByIdService,
     private readonly getRentalsByFilterService: GetRentalsByFilterService,
+    private readonly addRentalService: AddRentalService,
   ) {}
 
   @Post()
   create(@Body() createRentalDto: CreateRentalDto) {
-    // return this.rentalsService.create(createRentalDto);
+    return this.addRentalService.createRental(createRentalDto);
   }
 
   @Get()
-  getAllRentals() {
+  getAllRentals(): Promise<RentalDto[]> {
     return this.getAllRentalService.getAll();
   }
 
@@ -39,7 +42,7 @@ export class RentalsController {
   findRentalByFilter(
     @Query('id') userId?: number,
     @Query('e_id') e_id?: number,
-  ) {
+  ): Promise<RentalDto[]> {
     console.log(' binfbhd insoder controller');
     return this.getRentalsByFilterService.getRentals(
       userId ? +userId : 0,
@@ -58,7 +61,7 @@ export class RentalsController {
   }
 
   @Get(':id')
-  findRentalById(@Param('id') id: string) {
+  findRentalById(@Param('id') id: string): Promise<RentalDto> {
     return this.getRentalByIdService.getRentalById(+id);
   }
 }
