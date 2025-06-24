@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { RentalRepository } from '../repository/rentals.repository';
+import { RentalDto } from '../dto/rental.dto';
 
 @Injectable()
 export class GetRentalsByFilterService {
   constructor(private readonly rentalRepo: RentalRepository) {}
 
-  async getRentals(userId: number = 0, equipmentId: number = 0) {
+  async getRentals(
+    userId: number = 0,
+    equipmentId: number = 0,
+  ): Promise<RentalDto[]> {
     let filter: { user?: object; equipment?: object } = {};
     console.log('object in getRental servie');
 
