@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,8 +23,13 @@ import { addAddressService } from './services/addUserAddress.service';
 import { DeleteUserService } from './services/deleteUser.service';
 import { DeleteAddressService } from './services/deleteAddress.service';
 import { GetUserPaginationService } from './services/getUserPagination.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Controller('user')
+// @ApiBearerAuth()
+@UseGuards(AuthGuard)
 export class UserController {
   constructor(
     private readonly getUserByIdService: GetUserByIdService,
@@ -38,31 +44,37 @@ export class UserController {
   ) {}
 
   @Post()
+  @Roles(['user'])
   create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
     return this.createUserService.createUser(createUserDto);
   }
 
   @Post('address')
+  @Roles(['user'])
   addAddress(@Body() createAddressDto: CreateAddressDto): Promise<AddressDto> {
     return this.addAddressService.createAddress(createAddressDto);
   }
 
   @Get()
+  @Roles(['admin'])
   findAllUser(): Promise<UserDto[]> {
     return this.getAllUserService.getAllUser();
   }
 
   @Get(':id')
+  @Roles(['user', 'admin'])
   findOneUser(@Param('id') userId: string): Promise<UserDto> {
     return this.getUserByIdService.getUserById(+userId);
   }
 
   @Get('/:id/address')
+  @Roles(['user', 'admin'])
   getUserAddresses(@Param('id') userId: string): Promise<AddressDto[]> {
     return this.getUserAddressService.getUserAddresses(+userId);
   }
 
   @Get('/pagination/:perPage/:page')
+  @Roles(['admin'])
   getUserWithPagination(
     @Param('perPage') perPage: string,
     @Param('page') page: string,
@@ -71,16 +83,19 @@ export class UserController {
   }
 
   @Patch()
+  @Roles(['user', 'admin'])
   updateUser(@Body() updateUserDto: UpdateUserDto): Promise<UserDto> {
     return this.editUserService.editUser(updateUserDto);
   }
 
   @Delete(':id')
+  @Roles(['user', 'admin'])
   deleteUser(@Param('id') id: string) {
     return this.deleteUserService.deleteUser(+id);
   }
 
   @Delete('address/:id')
+  @Roles(['user'])
   deleteAddress(@Param('id') id: string) {
     return this.deleteAddressService.deleteAddress(+id);
   }

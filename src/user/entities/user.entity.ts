@@ -22,6 +22,10 @@ export class User {
   name: string;
 
   @AutoMap()
+  @Column({ default: 'user' })
+  role: string;
+
+  @AutoMap()
   @Column()
   email: string;
 
