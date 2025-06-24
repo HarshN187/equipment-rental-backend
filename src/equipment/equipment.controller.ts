@@ -16,6 +16,7 @@ import { AddEquipmentService } from './services/addEquipment.service';
 import { EquipmentDto } from './dto/equipment.dto';
 import { categoryDto } from './dto/category.dto';
 import { editEquipmentService } from './services/editEquipment.service';
+import { RemoveEquipmentService } from './services/removeEquipment.service';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -25,6 +26,7 @@ export class EquipmentController {
     private readonly getAllCategoryService: GetAllCategoryService,
     private readonly addEquipmentService: AddEquipmentService,
     private readonly editEquipService: editEquipmentService,
+    private readonly removeEquipService: RemoveEquipmentService,
   ) {}
 
   @Post()
@@ -58,7 +60,7 @@ export class EquipmentController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    // return this.equipmentService.remove(+id);
+  remove(@Param('id') id: string): Promise<boolean> {
+    return this.removeEquipService.RemoveEquipment(+id);
   }
 }

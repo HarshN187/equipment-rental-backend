@@ -11,6 +11,7 @@ import { GetEquipmentbyIdService } from './services/getEquipById.service';
 import { GetAllCategoryService } from './services/getAllCategory.service';
 import { AddEquipmentService } from './services/addEquipment.service';
 import { editEquipmentService } from './services/editEquipment.service';
+import { RemoveEquipmentService } from './services/removeEquipment.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Equipment, Category])],
@@ -24,6 +25,7 @@ import { editEquipmentService } from './services/editEquipment.service';
     GetAllCategoryService,
     AddEquipmentService,
     editEquipmentService,
+    RemoveEquipmentService,
   ],
   exports: [EquipmentRepository, CategoryRepository],
 })
