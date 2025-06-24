@@ -14,6 +14,8 @@ import { GetEquipmentbyIdService } from './services/getEquipById.service';
 import { GetAllCategoryService } from './services/getAllCategory.service';
 import { AddEquipmentService } from './services/addEquipment.service';
 import { EquipmentDto } from './dto/equipment.dto';
+import { categoryDto } from './dto/category.dto';
+import { editEquipmentService } from './services/editEquipment.service';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -22,6 +24,7 @@ export class EquipmentController {
     private readonly getEquipByIdService: GetEquipmentbyIdService,
     private readonly getAllCategoryService: GetAllCategoryService,
     private readonly addEquipmentService: AddEquipmentService,
+    private readonly editEquipService: editEquipmentService,
   ) {}
 
   @Post()
@@ -32,26 +35,26 @@ export class EquipmentController {
   }
 
   @Get()
-  findAllEquipment() {
+  findAllEquipment(): Promise<EquipmentDto[]> {
     return this.getAllEquipService.getAllEquipments();
   }
 
   @Get('/category')
-  findAllCategory() {
+  findAllCategory(): Promise<categoryDto[]> {
     return this.getAllCategoryService.getAll();
   }
 
   @Get(':id')
-  findOneEquipment(@Param('id') id: string) {
+  findOneEquipment(@Param('id') id: string): Promise<EquipmentDto> {
     return this.getEquipByIdService.getEquipment(+id);
   }
 
   @Patch(':id')
-  update(
+  updateEquipment(
     @Param('id') id: string,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
-  ) {
-    // return this.equipmentService.update(+id, updateEquipmentDto);
+  ): Promise<EquipmentDto> {
+    return this.editEquipService.editEquipment(updateEquipmentDto);
   }
 
   @Delete(':id')
