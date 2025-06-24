@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
@@ -18,8 +19,13 @@ import { categoryDto } from './dto/category.dto';
 import { editEquipmentService } from './services/editEquipment.service';
 import { RemoveEquipmentService } from './services/removeEquipment.service';
 import { GetPaginateEquipmentService } from './services/getPaginatEquipment.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { AuthGuard } from 'src/common/guards/auth.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
 @Controller('equipment')
+@ApiBearerAuth()
+@UseGuards(AuthGuard)
 export class EquipmentController {
   constructor(
     private readonly getAllEquipService: GetAllEquipmentService,
@@ -32,6 +38,7 @@ export class EquipmentController {
   ) {}
 
   @Post()
+  @Roles(['admin'])
   addEquipment(
     @Body() createEquipmentDto: CreateEquipmentDto,
   ): Promise<EquipmentDto> {
@@ -39,11 +46,13 @@ export class EquipmentController {
   }
 
   @Get()
+  @Roles(['admin', 'user'])
   findAllEquipment(): Promise<EquipmentDto[]> {
     return this.getAllEquipService.getAllEquipments();
   }
 
   @Get(':page/:perPage')
+  @Roles(['admin', 'user'])
   findPaginatEquipment(
     @Param('page') page: string,
     @Param('perPage') perPage: string,
@@ -52,16 +61,19 @@ export class EquipmentController {
   }
 
   @Get('/category')
+  @Roles(['admin', 'user'])
   findAllCategory(): Promise<categoryDto[]> {
     return this.getAllCategoryService.getAll();
   }
 
   @Get(':id')
+  @Roles(['admin', 'user'])
   findOneEquipment(@Param('id') id: string): Promise<EquipmentDto> {
     return this.getEquipByIdService.getEquipment(+id);
   }
 
   @Patch(':id')
+  @Roles(['admin'])
   updateEquipment(
     @Param('id') id: string,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
@@ -70,6 +82,7 @@ export class EquipmentController {
   }
 
   @Delete(':id')
+  @Roles(['admin'])
   remove(@Param('id') id: string): Promise<boolean> {
     return this.removeEquipService.RemoveEquipment(+id);
   }

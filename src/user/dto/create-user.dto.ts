@@ -24,6 +24,13 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({
+    example: 'user',
+  })
+  @AutoMap()
+  @IsString()
+  role: string;
+
+  @ApiProperty({
     minLength: 10,
     example: '99887766768',
   })

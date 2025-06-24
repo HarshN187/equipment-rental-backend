@@ -16,6 +16,9 @@ export class UserDto {
   phone: string;
 
   @AutoMap()
+  role: string;
+
+  @AutoMap()
   password: string;
 
   @AutoMap()

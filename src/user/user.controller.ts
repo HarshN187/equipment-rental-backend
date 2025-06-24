@@ -28,7 +28,7 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Controller('user')
-// @ApiBearerAuth()
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
 export class UserController {
   constructor(
@@ -44,7 +44,7 @@ export class UserController {
   ) {}
 
   @Post()
-  @Roles(['user'])
+  // @Roles(['user'])
   create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
     return this.createUserService.createUser(createUserDto);
   }

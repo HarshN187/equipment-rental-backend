@@ -3,6 +3,7 @@ import { UserRepository } from 'src/user/repository/user.repository';
 import { loginDto } from './dto/login.dto';
 import { DbException, RpcBaseException } from 'src/common/exceptions';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -18,13 +19,19 @@ export class AuthService {
       throw new DbException('User Not Found');
     }
 
-    if (user[0].password != body.password) {
-      throw new RpcBaseException('INValid Credentials', 401);
+    const match: boolean = await bcrypt.compare(
+      body.password,
+      user[0].password,
+    );
+
+    if (!match) {
+      throw new RpcBaseException('InValid Credentials', 401);
     }
 
     const token = this.jwtService.sign({
       email: body.email,
       id: user[0].user_id,
+      role: user[0].role,
     });
 
     return token;

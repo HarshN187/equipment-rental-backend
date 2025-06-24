@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RentalsModule } from './rentals/rentals.module';
@@ -58,6 +63,9 @@ import { VeryfyTokenMiddleware } from './common/middleware/verifyToken.middlewar
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // consumer.apply(VeryfyTokenMiddleware).forRoutes('user');
+    consumer
+      .apply(VeryfyTokenMiddleware)
+      .exclude({ path: 'user', method: RequestMethod.POST })
+      .forRoutes('user', 'equipment', 'rentals');
   }
 }
