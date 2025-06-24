@@ -3,7 +3,7 @@ import { categoryDto } from './category.dto';
 
 export class EquipmentDto {
   @AutoMap()
-  id: number;
+  e_id: number;
 
   @AutoMap()
   name: string;

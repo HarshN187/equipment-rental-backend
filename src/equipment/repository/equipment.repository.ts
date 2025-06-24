@@ -33,4 +33,8 @@ export class EquipmentRepository extends BaseRepo<
   public override get softDeleteColumnName(): keyof Equipment {
     return 'deleted_at';
   }
+
+  public override get idColumnName(): keyof Equipment {
+    return 'e_id';
+  }
 }

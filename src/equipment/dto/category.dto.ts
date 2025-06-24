@@ -2,7 +2,7 @@ import { AutoMap } from '@automapper/classes';
 
 export class categoryDto {
   @AutoMap()
-  id: number;
+  category_id: number;
 
   @AutoMap()
   name: string;
