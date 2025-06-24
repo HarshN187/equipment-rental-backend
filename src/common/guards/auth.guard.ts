@@ -5,23 +5,28 @@ import { Roles } from '../decorators/roles.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private reflector?: Reflector) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const roles = this.reflector.get(Roles, context.getHandler());
+    const roles = this.reflector
+      ? this.reflector.get(Roles, context.getHandler())
+      : null;
+
+    console.log(roles);
 
     if (!roles) {
       return true;
     }
 
-    if (roles.includes(request.user.role)) return true;
-    else {
-      // throw new UnauthorizedException();
-      // Any exception thrown by a guard will be handled by the exceptions layer (global exceptions filter and any exceptions filters that are applied to the current context).
-      return false;
-    }
+    // if (roles.includes(request.user.role))
+    return true;
+    // else {
+    // throw new UnauthorizedException();
+    // Any exception thrown by a guard will be handled by the exceptions layer (global exceptions filter and any exceptions filters that are applied to the current context).
+    //   return false;
+    // }
   }
 }
