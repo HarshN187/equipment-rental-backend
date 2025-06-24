@@ -21,6 +21,7 @@ import { EFilterOperation } from './e-filter-operation';
 import { ArgumentNilException, DbException } from './exceptions';
 import { countPages, Filter, IPageable, PageableFilter } from './filtering';
 import { IReadOnlyRepo } from './interface/i-read-only.repo';
+
 import {
   filter,
   isArray,
@@ -34,13 +35,7 @@ import {
   validateUuid,
 } from './utils';
 
-// This class is generic, meaning it can be used with different types of entities, domain models, and filters.
-// TEntity: The database entity type.
-// T: The domain model type (typically what you want to return to the API).
-// TKey: The type of the primary key (e.g., string, number).
-// TPageableFilter: A filter object used for pagination.
-// TFilter: A filter object used for general filtering.
-
+type temp = [string, unknown, EFilterOperation];
 export abstract class BaseReadOnlyRepo<
   TEntity extends ObjectLiteral,
   T,
@@ -73,31 +68,27 @@ export abstract class BaseReadOnlyRepo<
     return 'deletedAt' as keyof TEntity;
   }
 
-  public async getAsync(pk: TKey): Promise<T | null> {
+  public async getAsync(pk: TKey): Promise<T | null | undefined> {
     try {
       if (isNil(pk)) {
         throw new ArgumentNilException('');
       }
       const key =
         typeof pk === 'object' ? { ...pk } : { [this.idColumnName]: pk };
-      const e = await this.internalRepo.findOneBy(key as any);
-
-      if (e == null) {
+      const e: TEntity | null = await this.internalRepo.findOneBy(key as any);
+      if (e != null && this.isDeleted(e)) {
         return null;
       }
-      if (this.isDeleted(e)) {
-        return null;
-      }
-      return this.mapToModel(e);
+      if (e != null) return this.mapToModel(e);
     } catch (ex) {
       this.logger.error(ex);
       throw new DbException(ex);
     }
   }
 
-  public async allAsync(filterObj?: TFilter): Promise<T[]> {
+  public async allAsync(filterObj: TFilter): Promise<T[]> {
     try {
-      const opts = filterObj ? this.createFilterOpts(filterObj) : {};
+      const opts = this.createFilterOpts(filterObj);
       const es = await this.internalRepo.find(opts);
       return this.mapToModelArray(es);
     } catch (ex) {
@@ -106,17 +97,16 @@ export abstract class BaseReadOnlyRepo<
     }
   }
 
-  public async pagedAsync(filterObj?: TPageableFilter): Promise<IPageable<T>> {
+  public async pagedAsync(filterObj: TPageableFilter): Promise<IPageable<T>> {
     try {
-      const opts = filterObj ? this.createFilterOpts(filterObj) : {};
-
+      const opts = this.createFilterOpts(filterObj);
       const [es, count] = await this.internalRepo.findAndCount(opts);
       return {
         items: this.mapToModelArray(es),
-        page: filterObj?.$page,
-        perPage: filterObj?.$perPage,
+        page: filterObj.$page,
+        perPage: filterObj.$perPage,
         totalCount: count,
-        totalPages: countPages(count, filterObj?.$perPage),
+        totalPages: countPages(count, filterObj.$perPage),
       };
     } catch (ex) {
       this.logger.error(ex);
@@ -124,9 +114,9 @@ export abstract class BaseReadOnlyRepo<
     }
   }
 
-  public async countAsync(filterObj?: TFilter): Promise<number> {
+  public async countAsync(filterObj: TFilter): Promise<number> {
     try {
-      const opts = filterObj ? this.createFilterOpts(filterObj) : {};
+      const opts = this.createFilterOpts(filterObj);
       const count = await this.internalRepo.count(opts);
       return count;
     } catch (ex) {
@@ -152,17 +142,14 @@ export abstract class BaseReadOnlyRepo<
     filterObj: TFilter | TPageableFilter,
   ): FindManyOptions<TEntity> {
     if (isNilOrEmpty(filterObj)) {
-      return {};
+      // return null;
     }
     const where: any = reduce(
       filter(
         toPairs(omit(filterObj, this.specialFilterFields)),
         ([, value]) => !isUndefined(value),
       ),
-      (acc, item) => {
-        const [key, value] = item as [string, any];
-        ({ ...acc, ...this.createPartialWhere(key, value) });
-      },
+      (acc, item: temp) => ({ ...acc, ...this.createPartialWhere(...item) }),
       {},
     );
     if (isArray(filterObj.$ids) && !isEmpty(filterObj.$ids)) {
@@ -173,12 +160,14 @@ export abstract class BaseReadOnlyRepo<
       order: { [filterObj.$orderBy]: filterObj.$order },
     };
     const pf = filterObj as PageableFilter<TFilter>;
-    ``;
-    if (!isNilOrEmpty(pf.$page) && !isNilOrEmpty(pf.$perPage)) {
-      if (pf.$perPage !== undefined && pf.$page !== undefined) {
-        opts.skip = pf.$perPage * (pf.$page - 1);
-        opts.take = pf.$perPage;
-      }
+    if (
+      !isNilOrEmpty(pf.$page) &&
+      !isNilOrEmpty(pf.$perPage) &&
+      pf.$perPage &&
+      pf.$page
+    ) {
+      opts.skip = pf.$perPage * (pf.$page - 1);
+      opts.take = pf.$perPage;
     }
     opts.order = this.transformOrderBy(opts.order);
     this.modifyFindOption(opts, filterObj);

@@ -8,7 +8,9 @@ export class GetUserAddressesService {
   constructor(private readonly addressRepo: AddressRepository) {}
 
   async getUserAddresses(userId: number): Promise<AddressDto[]> {
-    const result = await this.addressRepo.allAsync({ $user: { id: userId } });
+    const result = await this.addressRepo.allAsync({
+      user: { user_id: userId },
+    });
     if (!result) {
       throw new DbException('data not found');
     }
