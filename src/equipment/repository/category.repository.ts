@@ -33,4 +33,8 @@ export class CategoryRepository extends BaseRepo<
   public override get softDeleteColumnName(): keyof Category {
     return 'deleted_at';
   }
+
+  public override get idColumnName(): keyof Category {
+    return 'category_id';
+  }
 }

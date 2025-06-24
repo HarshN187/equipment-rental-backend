@@ -9,6 +9,7 @@ import { GetAllEquipmentService } from './services/getAllEquipments.service';
 import { mapperProfile } from 'src/common/profiles/mapper.profile';
 import { GetEquipmentbyIdService } from './services/getEquipById.service';
 import { GetAllCategoryService } from './services/getAllCategory.service';
+import { AddEquipmentService } from './services/addEquipment.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Equipment, Category])],
@@ -20,6 +21,7 @@ import { GetAllCategoryService } from './services/getAllCategory.service';
     mapperProfile,
     GetEquipmentbyIdService,
     GetAllCategoryService,
+    AddEquipmentService,
   ],
   exports: [EquipmentRepository, CategoryRepository],
 })

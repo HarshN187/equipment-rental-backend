@@ -16,7 +16,7 @@ import { Category } from './category.entity';
 export class Equipment {
   @AutoMap()
   @PrimaryGeneratedColumn()
-  id: number;
+  e_id: number;
 
   @AutoMap()
   @Column()

@@ -12,6 +12,8 @@ import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { GetAllEquipmentService } from './services/getAllEquipments.service';
 import { GetEquipmentbyIdService } from './services/getEquipById.service';
 import { GetAllCategoryService } from './services/getAllCategory.service';
+import { AddEquipmentService } from './services/addEquipment.service';
+import { EquipmentDto } from './dto/equipment.dto';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -19,11 +21,14 @@ export class EquipmentController {
     private readonly getAllEquipService: GetAllEquipmentService,
     private readonly getEquipByIdService: GetEquipmentbyIdService,
     private readonly getAllCategoryService: GetAllCategoryService,
+    private readonly addEquipmentService: AddEquipmentService,
   ) {}
 
   @Post()
-  create(@Body() createEquipmentDto: CreateEquipmentDto) {
-    // return this.equipmentService.create(createEquipmentDto);
+  addEquipment(
+    @Body() createEquipmentDto: CreateEquipmentDto,
+  ): Promise<EquipmentDto> {
+    return this.addEquipmentService.addEquipment(createEquipmentDto);
   }
 
   @Get()
