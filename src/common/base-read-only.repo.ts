@@ -97,9 +97,9 @@ export abstract class BaseReadOnlyRepo<
       }
       const key =
         typeof pk === 'object' ? { ...pk } : { [this.idColumnName]: pk };
-      const e: TEntity | null = await this.internalRepo.findOneBy({
-        ...(key as any),
-        relation: relation,
+      const e: TEntity | null = await this.internalRepo.findOne({
+        where: key as any,
+        relations: relation,
       });
       if (e != null && this.isDeleted(e)) {
         return null;

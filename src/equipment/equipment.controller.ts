@@ -10,10 +10,16 @@ import {
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { GetAllEquipmentService } from './services/getAllEquipments.service';
+import { GetEquipmentbyIdService } from './services/getEquipById.service';
+import { GetAllCategoryService } from './services/getAllCategory.service';
 
 @Controller('equipment')
 export class EquipmentController {
-  constructor(private readonly getAllEquipService: GetAllEquipmentService) {}
+  constructor(
+    private readonly getAllEquipService: GetAllEquipmentService,
+    private readonly getEquipByIdService: GetEquipmentbyIdService,
+    private readonly getAllCategoryService: GetAllCategoryService,
+  ) {}
 
   @Post()
   create(@Body() createEquipmentDto: CreateEquipmentDto) {
@@ -25,9 +31,14 @@ export class EquipmentController {
     return this.getAllEquipService.getAllEquipments();
   }
 
+  @Get('/category')
+  findAllCategory() {
+    return this.getAllCategoryService.getAll();
+  }
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    // return this.equipmentService.findOne(+id);
+  findOneEquipment(@Param('id') id: string) {
+    return this.getEquipByIdService.getEquipment(+id);
   }
 
   @Patch(':id')
