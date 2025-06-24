@@ -16,6 +16,7 @@ import { GetRentalsByFilterService } from './services/getRentalByFilter.service'
 import { ApiQuery } from '@nestjs/swagger';
 import { RentalDto } from './dto/rental.dto';
 import { AddRentalService } from './services/addRental.service';
+import { EditRentalService } from './services/editRental.service';
 
 @Controller('rentals')
 export class RentalsController {
@@ -24,6 +25,7 @@ export class RentalsController {
     private readonly getRentalByIdService: getRentalByIdService,
     private readonly getRentalsByFilterService: GetRentalsByFilterService,
     private readonly addRentalService: AddRentalService,
+    private readonly editRentalService: EditRentalService,
   ) {}
 
   @Post()
@@ -51,8 +53,11 @@ export class RentalsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRentalDto: UpdateRentalDto) {
-    // return this.rentalsService.update(+id, updateRentalDto);
+  updateRental(
+    @Param('id') id: string,
+    @Body() updateRentalDto: UpdateRentalDto,
+  ) {
+    return this.editRentalService.editRental(updateRentalDto);
   }
 
   @Delete(':id')
