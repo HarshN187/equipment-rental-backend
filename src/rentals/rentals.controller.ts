@@ -17,6 +17,7 @@ import { ApiQuery } from '@nestjs/swagger';
 import { RentalDto } from './dto/rental.dto';
 import { AddRentalService } from './services/addRental.service';
 import { EditRentalService } from './services/editRental.service';
+import { RemoveRentalService } from './services/removeRental.service';
 
 @Controller('rentals')
 export class RentalsController {
@@ -26,6 +27,7 @@ export class RentalsController {
     private readonly getRentalsByFilterService: GetRentalsByFilterService,
     private readonly addRentalService: AddRentalService,
     private readonly editRentalService: EditRentalService,
+    private readonly removeRentalService: RemoveRentalService,
   ) {}
 
   @Post()
@@ -56,13 +58,13 @@ export class RentalsController {
   updateRental(
     @Param('id') id: string,
     @Body() updateRentalDto: UpdateRentalDto,
-  ) {
+  ): Promise<RentalDto> {
     return this.editRentalService.editRental(updateRentalDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    // return this.rentalsService.remove(+id);
+  removeRental(@Param('id') id: string): Promise<boolean> {
+    return this.removeRentalService.removeRental(+id);
   }
 
   @Get(':id')

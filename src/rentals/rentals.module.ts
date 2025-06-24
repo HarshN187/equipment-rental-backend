@@ -12,6 +12,7 @@ import { Equipment } from 'src/equipment/entities/equipment.entity';
 import { EquipmentRepository } from 'src/equipment/repository/equipment.repository';
 import { AddRentalService } from './services/addRental.service';
 import { EditRentalService } from './services/editRental.service';
+import { RemoveRentalService } from './services/removeRental.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Rental, User, Equipment])],
@@ -25,6 +26,7 @@ import { EditRentalService } from './services/editRental.service';
     EquipmentRepository,
     AddRentalService,
     EditRentalService,
+    RemoveRentalService,
   ],
 })
 export class RentalsModule {}
