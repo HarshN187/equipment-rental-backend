@@ -9,10 +9,11 @@ import {
 } from '@nestjs/common';
 import { CreateRentalDto } from './dto/create-rental.dto';
 import { UpdateRentalDto } from './dto/update-rental.dto';
+import { getAllRentalService } from './services/getAllRentals.service';
 
 @Controller('rentals')
 export class RentalsController {
-  constructor() {}
+  constructor(private readonly getAllRentalService: getAllRentalService) {}
 
   @Post()
   create(@Body() createRentalDto: CreateRentalDto) {
@@ -20,8 +21,8 @@ export class RentalsController {
   }
 
   @Get()
-  findAll() {
-    // return this.rentalsService.findAll();
+  getAllRentals() {
+    return this.getAllRentalService.getAll();
   }
 
   @Get(':id')
