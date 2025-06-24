@@ -17,6 +17,7 @@ import { EquipmentDto } from './dto/equipment.dto';
 import { categoryDto } from './dto/category.dto';
 import { editEquipmentService } from './services/editEquipment.service';
 import { RemoveEquipmentService } from './services/removeEquipment.service';
+import { GetPaginateEquipmentService } from './services/getPaginatEquipment.service';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -27,6 +28,7 @@ export class EquipmentController {
     private readonly addEquipmentService: AddEquipmentService,
     private readonly editEquipService: editEquipmentService,
     private readonly removeEquipService: RemoveEquipmentService,
+    private readonly getPaginateEquipService: GetPaginateEquipmentService,
   ) {}
 
   @Post()
@@ -39,6 +41,14 @@ export class EquipmentController {
   @Get()
   findAllEquipment(): Promise<EquipmentDto[]> {
     return this.getAllEquipService.getAllEquipments();
+  }
+
+  @Get(':page/:perPage')
+  findPaginatEquipment(
+    @Param('page') page: string,
+    @Param('perPage') perPage: string,
+  ): Promise<EquipmentDto[]> {
+    return this.getPaginateEquipService.getPaginateEquipments(+page, +perPage);
   }
 
   @Get('/category')
