@@ -90,13 +90,13 @@ export class UserController {
 
   @Delete(':id')
   @Roles(['user', 'admin'])
-  deleteUser(@Param('id') id: string) {
+  deleteUser(@Param('id') id: string): Promise<boolean> {
     return this.deleteUserService.deleteUser(+id);
   }
 
   @Delete('address/:id')
   @Roles(['user'])
-  deleteAddress(@Param('id') id: string) {
+  deleteAddress(@Param('id') id: string): Promise<boolean> {
     return this.deleteAddressService.deleteAddress(+id);
   }
 }
