@@ -61,12 +61,6 @@ export class UserController {
     return this.getAllUserService.getAllUser();
   }
 
-  @Get(':id')
-  @Roles(['user', 'admin'])
-  findOneUser(@Param('id') userId: string): Promise<UserDto> {
-    return this.getUserByIdService.getUserById(+userId);
-  }
-
   @Get('/:id/address')
   @Roles(['user', 'admin'])
   getUserAddresses(@Param('id') userId: string): Promise<AddressDto[]> {
@@ -98,5 +92,11 @@ export class UserController {
   @Roles(['user'])
   deleteAddress(@Param('id') id: string): Promise<boolean> {
     return this.deleteAddressService.deleteAddress(+id);
+  }
+
+  @Get(':id')
+  @Roles(['user', 'admin'])
+  findOneUser(@Param('id') userId: string): Promise<UserDto> {
+    return this.getUserByIdService.getUserById(+userId);
   }
 }
