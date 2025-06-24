@@ -140,6 +140,29 @@ export abstract class BaseReadOnlyRepo<
     }
   }
 
+  public async pagedAsyncWithJoin(
+    filterObj: TPageableFilter,
+    relation,
+  ): Promise<IPageable<T>> {
+    try {
+      const opts = this.createFilterOpts(filterObj);
+      const [es, count] = await this.internalRepo.findAndCount({
+        ...opts,
+        relations: relation,
+      });
+      return {
+        items: this.mapToModelArray(es),
+        page: filterObj.$page,
+        perPage: filterObj.$perPage,
+        totalCount: count,
+        totalPages: countPages(count, filterObj.$perPage),
+      };
+    } catch (ex) {
+      this.logger.error(ex);
+      throw new DbException(ex);
+    }
+  }
+
   public async countAsync(filterObj: TFilter): Promise<number> {
     try {
       const opts = this.createFilterOpts(filterObj);
