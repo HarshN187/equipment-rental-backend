@@ -75,8 +75,9 @@ export class UserController {
   getUserWithPagination(
     @Param('perPage') perPage: string,
     @Param('page') page: string,
+    @Query('order') order: number,
   ): Promise<UserDto[]> {
-    return this.getUserPagination.getUserPagination(+page, +perPage);
+    return this.getUserPagination.getUserPagination(+page, +perPage, +order);
   }
 
   @Patch()
