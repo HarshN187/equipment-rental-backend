@@ -59,8 +59,13 @@ export class EquipmentController {
   findPaginatEquipment(
     @Param('page') page: string,
     @Param('perPage') perPage: string,
+    @Query('order') order: number,
   ): Promise<EquipmentDto[]> {
-    return this.getPaginateEquipService.getPaginateEquipments(+page, +perPage);
+    return this.getPaginateEquipService.getPaginateEquipments(
+      +page,
+      +perPage,
+      +order,
+    );
   }
 
   @Get('/category')

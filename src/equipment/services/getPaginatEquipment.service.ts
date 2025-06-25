@@ -9,11 +9,14 @@ export class GetPaginateEquipmentService {
   async getPaginateEquipments(
     page: number,
     perPage: number,
+    order: number,
   ): Promise<EquipmentDto[]> {
     const result = await this.equipmentRepo.pagedAsyncWithJoin(
       {
         $page: page,
         $perPage: perPage,
+        $orderBy: 'e_id',
+        $order: order ? 'ASC' : 'DESC',
       },
       { category: true },
     );

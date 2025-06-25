@@ -9,10 +9,13 @@ export class GetRentalsPaginateService {
   async getPaginateRentals(
     page: number,
     perPage: number,
+    order: number,
   ): Promise<RentalDto[]> {
     const data = await this.rentalRepo.pagedAsync({
       $page: page,
       $perPage: perPage,
+      $orderBy: 'id',
+      $order: order ? 'ASC' : 'DESC',
     });
 
     return data.items;

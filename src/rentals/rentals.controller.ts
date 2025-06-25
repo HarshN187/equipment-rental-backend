@@ -84,8 +84,13 @@ export class RentalsController {
   getRentalPaginate(
     @Param('page') page: string,
     @Param('perPage') perPage: string,
+    @Query('order') order: number,
   ): Promise<RentalDto[]> {
-    return this.getRentalsPaginateService.getPaginateRentals(+page, +perPage);
+    return this.getRentalsPaginateService.getPaginateRentals(
+      +page,
+      +perPage,
+      +order,
+    );
   }
 
   @Get(':id')

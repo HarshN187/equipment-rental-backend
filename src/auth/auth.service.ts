@@ -13,12 +13,13 @@ export class AuthService {
   ) {}
 
   async loginUser(body: loginDto) {
+    console.log(body);
     const user = await this.userRepo.allAsync({ email: body.email });
 
-    if (!user) {
+    if (!user.length) {
       throw new DbException('User Not Found');
     }
-
+    console.log(user);
     const match: boolean = await bcrypt.compare(
       body.password,
       user[0].password,
