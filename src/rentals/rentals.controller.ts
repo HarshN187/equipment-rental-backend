@@ -22,10 +22,11 @@ import { RemoveRentalService } from './services/removeRental.service';
 import { GetRentalsPaginateService } from './services/getPaginateRentals.service';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { GetRentalResDto } from './dto/getRentalRes.dto';
 
 @Controller('rentals')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class RentalsController {
   constructor(
     private readonly getAllRentalService: getAllRentalService,
@@ -39,13 +40,13 @@ export class RentalsController {
 
   @Post()
   @Roles(['admin', 'user'])
-  create(@Body() createRentalDto: CreateRentalDto) {
+  create(@Body() createRentalDto: CreateRentalDto): Promise<GetRentalResDto> {
     return this.addRentalService.createRental(createRentalDto);
   }
 
   @Get()
   @Roles(['admin'])
-  getAllRentals(): Promise<RentalDto[]> {
+  getAllRentals(): Promise<GetRentalResDto[]> {
     return this.getAllRentalService.getAll();
   }
 
@@ -56,7 +57,7 @@ export class RentalsController {
   findRentalByFilter(
     @Query('id') userId?: number,
     @Query('e_id') e_id?: number,
-  ): Promise<RentalDto[]> {
+  ): Promise<GetRentalResDto[]> {
     console.log(' binfbhd insoder controller');
     return this.getRentalsByFilterService.getRentals(
       userId ? +userId : 0,
@@ -69,7 +70,7 @@ export class RentalsController {
   updateRental(
     @Param('id') id: string,
     @Body() updateRentalDto: UpdateRentalDto,
-  ): Promise<RentalDto> {
+  ): Promise<GetRentalResDto> {
     return this.editRentalService.editRental(updateRentalDto);
   }
 
@@ -85,7 +86,7 @@ export class RentalsController {
     @Param('page') page: string,
     @Param('perPage') perPage: string,
     @Query('order') order: number,
-  ): Promise<RentalDto[]> {
+  ): Promise<GetRentalResDto[]> {
     return this.getRentalsPaginateService.getPaginateRentals(
       +page,
       +perPage,
@@ -95,7 +96,7 @@ export class RentalsController {
 
   @Get(':id')
   @Roles(['admin', 'user'])
-  findRentalById(@Param('id') id: string): Promise<RentalDto> {
+  findRentalById(@Param('id') id: string): Promise<GetRentalResDto> {
     return this.getRentalByIdService.getRentalById(+id);
   }
 }

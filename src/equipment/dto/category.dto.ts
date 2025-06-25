@@ -1,4 +1,5 @@
 import { AutoMap } from '@automapper/classes';
+import { EquipmentDto } from './equipment.dto';
 
 export class categoryDto {
   @AutoMap()
@@ -18,4 +19,7 @@ export class categoryDto {
 
   @AutoMap()
   deleted_at: Date;
+
+  @AutoMap()
+  equipments: EquipmentDto[];
 }

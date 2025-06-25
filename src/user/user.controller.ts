@@ -28,10 +28,12 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { FindUserBySearchService } from './services/findUserBySearch.service';
+import { GetUserResDto } from './dto/getUserRes.dto';
+import { GetAddressResDto } from './dto/getAddress.dto';
 
 @Controller('user')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class UserController {
   constructor(
     private readonly getUserByIdService: GetUserByIdService,
@@ -48,25 +50,27 @@ export class UserController {
 
   @Post()
   // @Roles(['user'])
-  create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
+  create(@Body() createUserDto: CreateUserDto): Promise<GetUserResDto> {
     return this.createUserService.createUser(createUserDto);
   }
 
   @Post('address')
   @Roles(['user'])
-  addAddress(@Body() createAddressDto: CreateAddressDto): Promise<AddressDto> {
+  addAddress(
+    @Body() createAddressDto: CreateAddressDto,
+  ): Promise<GetAddressResDto> {
     return this.addAddressService.createAddress(createAddressDto);
   }
 
   @Get()
   @Roles(['admin'])
-  findAllUser(): Promise<UserDto[]> {
+  findAllUser(): Promise<GetUserResDto[]> {
     return this.getAllUserService.getAllUser();
   }
 
   @Get('/:id/address')
   @Roles(['user', 'admin'])
-  getUserAddresses(@Param('id') userId: string): Promise<AddressDto[]> {
+  getUserAddresses(@Param('id') userId: string): Promise<GetAddressResDto[]> {
     return this.getUserAddressService.getUserAddresses(+userId);
   }
 
@@ -76,13 +80,13 @@ export class UserController {
     @Param('perPage') perPage: string,
     @Param('page') page: string,
     @Query('order') order: number,
-  ): Promise<UserDto[]> {
+  ): Promise<GetUserResDto[]> {
     return this.getUserPagination.getUserPagination(+page, +perPage, +order);
   }
 
   @Patch()
   @Roles(['user', 'admin'])
-  updateUser(@Body() updateUserDto: UpdateUserDto): Promise<UserDto> {
+  updateUser(@Body() updateUserDto: UpdateUserDto): Promise<GetUserResDto> {
     return this.editUserService.editUser(updateUserDto);
   }
 
@@ -100,13 +104,13 @@ export class UserController {
 
   @Get('search')
   @Roles(['admin'])
-  findUserBySearch(@Query('query') query: string): Promise<UserDto[]> {
+  findUserBySearch(@Query('query') query: string): Promise<GetUserResDto[]> {
     return this.findUserWithSearch.findUser(query);
   }
 
   @Get(':id')
   @Roles(['user', 'admin'])
-  findOneUser(@Param('id') userId: string): Promise<UserDto> {
+  findOneUser(@Param('id') userId: string): Promise<GetUserResDto> {
     return this.getUserByIdService.getUserById(+userId);
   }
 }

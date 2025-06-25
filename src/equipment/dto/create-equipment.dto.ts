@@ -5,10 +5,6 @@ import { categoryDto } from './category.dto';
 
 export class CreateEquipmentDto {
   @AutoMap()
-  @ApiProperty({
-    example: 2,
-  })
-  @IsInt()
   e_id: number;
 
   @AutoMap()

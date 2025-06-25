@@ -1,16 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { EquipmentRepository } from '../repository/equipment.repository';
 import { EquipmentDto } from '../dto/equipment.dto';
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { GetEquipmentResDto } from '../dto/getEquipmentRes.dto';
 
 @Injectable()
 export class GetPaginateEquipmentService {
-  constructor(private readonly equipmentRepo: EquipmentRepository) {}
+  constructor(
+    private readonly equipmentRepo: EquipmentRepository,
+    @InjectMapper()
+    private readonly mapper: Mapper,
+  ) {}
 
   async getPaginateEquipments(
     page: number,
     perPage: number,
     order: number,
-  ): Promise<EquipmentDto[]> {
+  ): Promise<GetEquipmentResDto[]> {
     const result = await this.equipmentRepo.pagedAsyncWithJoin(
       {
         $page: page,
@@ -21,6 +28,12 @@ export class GetPaginateEquipmentService {
       { category: true },
     );
 
-    return result.items;
+    const response = this.mapper.mapArray(
+      result.items,
+      EquipmentDto,
+      GetEquipmentResDto,
+    );
+
+    return response;
   }
 }

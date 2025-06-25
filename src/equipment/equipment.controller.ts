@@ -24,10 +24,12 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { FindEquipmentBySearchService } from './services/searchEquipment.service';
+import { GetEquipmentResDto } from './dto/getEquipmentRes.dto';
+import { GetCategoryResDto } from './dto/getCategoryRes.dto';
 
 @Controller('equipment')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class EquipmentController {
   constructor(
     private readonly getAllEquipService: GetAllEquipmentService,
@@ -44,13 +46,13 @@ export class EquipmentController {
   @Roles(['admin'])
   addEquipment(
     @Body() createEquipmentDto: CreateEquipmentDto,
-  ): Promise<EquipmentDto> {
+  ): Promise<GetEquipmentResDto> {
     return this.addEquipmentService.addEquipment(createEquipmentDto);
   }
 
   @Get()
   @Roles(['admin', 'user'])
-  findAllEquipment(): Promise<EquipmentDto[]> {
+  findAllEquipment(): Promise<GetEquipmentResDto[]> {
     return this.getAllEquipService.getAllEquipments();
   }
 
@@ -60,7 +62,7 @@ export class EquipmentController {
     @Param('page') page: string,
     @Param('perPage') perPage: string,
     @Query('order') order: number,
-  ): Promise<EquipmentDto[]> {
+  ): Promise<GetEquipmentResDto[]> {
     return this.getPaginateEquipService.getPaginateEquipments(
       +page,
       +perPage,
@@ -70,19 +72,21 @@ export class EquipmentController {
 
   @Get('/category')
   @Roles(['admin', 'user'])
-  findAllCategory(): Promise<categoryDto[]> {
+  findAllCategory(): Promise<GetCategoryResDto[]> {
     return this.getAllCategoryService.getAll();
   }
 
   @Get('search')
   @Roles(['user', 'admin'])
-  searchEquipment(@Query('query') query: string): Promise<EquipmentDto[]> {
+  searchEquipment(
+    @Query('query') query: string,
+  ): Promise<GetEquipmentResDto[]> {
     return this.searchEquipmentService.findEquipment(query);
   }
 
   @Get(':id')
   @Roles(['admin', 'user'])
-  findOneEquipment(@Param('id') id: string): Promise<EquipmentDto> {
+  findOneEquipment(@Param('id') id: string): Promise<GetEquipmentResDto> {
     return this.getEquipByIdService.getEquipment(+id);
   }
 
@@ -91,7 +95,7 @@ export class EquipmentController {
   updateEquipment(
     @Param('id') id: string,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
-  ): Promise<EquipmentDto> {
+  ): Promise<GetEquipmentResDto> {
     return this.editEquipService.editEquipment(updateEquipmentDto);
   }
 
