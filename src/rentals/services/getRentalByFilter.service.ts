@@ -8,11 +8,7 @@ import { GetRentalResDto } from '../dto/getRentalRes.dto';
 
 @Injectable()
 export class GetRentalsByFilterService {
-  constructor(
-    private readonly rentalRepo: RentalRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly rentalRepo: RentalRepository) {}
 
   async getRentals(
     userId: number = 0,
@@ -35,7 +31,7 @@ export class GetRentalsByFilterService {
       throw new DbException('data not found');
     }
 
-    const response = this.mapper.mapArray(data, RentalDto, GetRentalResDto);
+    const response = this.rentalRepo.mapToResponseArray(data);
 
     return response;
   }

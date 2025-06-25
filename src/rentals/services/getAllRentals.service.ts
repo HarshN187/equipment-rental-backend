@@ -8,11 +8,7 @@ import { GetRentalResDto } from '../dto/getRentalRes.dto';
 
 @Injectable()
 export class getAllRentalService {
-  constructor(
-    private readonly rentalRepo: RentalRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly rentalRepo: RentalRepository) {}
 
   async getAll(): Promise<GetRentalResDto[]> {
     const data = await this.rentalRepo.allAsync({});
@@ -21,7 +17,7 @@ export class getAllRentalService {
       throw new DbException('data not found');
     }
 
-    const response = this.mapper.mapArray(data, RentalDto, GetRentalResDto);
+    const response = this.rentalRepo.mapToResponseArray(data);
 
     return response;
   }

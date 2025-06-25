@@ -8,11 +8,7 @@ import { GetUserResDto } from '../dto/getUserRes.dto';
 
 @Injectable()
 export class GetUserByIdService {
-  constructor(
-    private readonly userRepository: UserRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async getUserById(userId: number): Promise<GetUserResDto> {
     const result = await this.userRepository.getAsyncWithJoin(userId, [
@@ -25,7 +21,7 @@ export class GetUserByIdService {
       throw new DbException('data not found');
     }
 
-    const response = this.mapper.map(result, UserDto, GetUserResDto);
+    const response = this.userRepository.mapToResponse(result);
 
     return response;
   }

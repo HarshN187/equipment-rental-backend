@@ -8,11 +8,7 @@ import { GetAddressResDto } from '../dto/getAddress.dto';
 
 @Injectable()
 export class GetUserAddressesService {
-  constructor(
-    private readonly addressRepo: AddressRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly addressRepo: AddressRepository) {}
 
   async getUserAddresses(userId: number): Promise<GetAddressResDto[]> {
     const result = await this.addressRepo.allAsync({
@@ -23,7 +19,7 @@ export class GetUserAddressesService {
       throw new DbException('data not found');
     }
 
-    const response = this.mapper.mapArray(result, AddressDto, GetAddressResDto);
+    const response = this.addressRepo.mapToResponseArray(result);
 
     return response;
   }

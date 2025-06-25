@@ -7,6 +7,7 @@ import { PinoLogger } from 'nestjs-pino';
 import { BaseRepo } from '../../common/base.repo';
 import { Address } from 'src/user/entities/address.entity';
 import { AddressDto } from 'src/user/dto/address.dto';
+import { GetAddressResDto } from '../dto/getAddress.dto';
 
 @Injectable()
 export class AddressRepository extends BaseRepo<
@@ -32,5 +33,13 @@ export class AddressRepository extends BaseRepo<
 
   public override get softDeleteColumnName(): keyof Address {
     return 'deleted_at';
+  }
+
+  public mapToResponse(body: AddressDto) {
+    return this.mapper.map(body, AddressDto, GetAddressResDto);
+  }
+
+  public mapToResponseArray(body: AddressDto[]) {
+    return this.mapper.mapArray(body, AddressDto, GetAddressResDto);
   }
 }

@@ -24,7 +24,7 @@ export class CreateUserService {
 
     const result = await this.userRepo.createAsync(reqData);
 
-    const response = this.mapper.map(result, UserDto, GetUserResDto);
+    const response = this.userRepo.mapToResponse(result);
 
     return response;
   }

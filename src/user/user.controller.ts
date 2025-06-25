@@ -33,7 +33,7 @@ import { GetAddressResDto } from './dto/getAddress.dto';
 
 @Controller('user')
 @ApiBearerAuth()
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class UserController {
   constructor(
     private readonly getUserByIdService: GetUserByIdService,

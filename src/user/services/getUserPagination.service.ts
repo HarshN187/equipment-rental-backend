@@ -8,11 +8,7 @@ import { GetUserResDto } from '../dto/getUserRes.dto';
 
 @Injectable()
 export class GetUserPaginationService {
-  constructor(
-    private readonly userRepository: UserRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async getUserPagination(
     page: number,
@@ -30,7 +26,7 @@ export class GetUserPaginationService {
       throw new DbException('data not found');
     }
 
-    const response = this.mapper.mapArray(result.items, UserDto, GetUserResDto);
+    const response = this.userRepository.mapToResponseArray(result.items);
 
     return response;
   }

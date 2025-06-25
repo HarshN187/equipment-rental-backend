@@ -63,9 +63,9 @@ import { VeryfyTokenMiddleware } from './common/middleware/verifyToken.middlewar
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // consumer
-    //   .apply(VeryfyTokenMiddleware)
-    //   .exclude({ path: 'user', method: RequestMethod.POST })
-    //   .forRoutes('user', 'equipment', 'rentals');
+    consumer
+      .apply(VeryfyTokenMiddleware)
+      .exclude({ path: 'user', method: RequestMethod.POST })
+      .forRoutes('user', 'equipment', 'rentals');
   }
 }

@@ -31,11 +31,7 @@ export class AddEquipmentService {
       category: categoryData,
     });
 
-    const response = this.mapper.map(
-      equipmentAdded,
-      EquipmentDto,
-      GetEquipmentResDto,
-    );
+    const response = this.equipmentRepo.mapToResponse(equipmentAdded);
 
     return response;
   }

@@ -42,7 +42,7 @@ export class AddRentalService {
       equipment: equipData,
     });
 
-    const response = this.mapper.map(data, RentalDto, GetRentalResDto);
+    const response = this.rentalRepo.mapToResponse(data);
 
     return response;
   }

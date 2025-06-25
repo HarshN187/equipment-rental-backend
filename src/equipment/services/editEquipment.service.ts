@@ -32,11 +32,7 @@ export class editEquipmentService {
       category: categoryData,
     } as unknown as EquipmentDto);
 
-    const response = this.mapper.map(
-      equipmentUpdated,
-      EquipmentDto,
-      GetEquipmentResDto,
-    );
+    const response = this.equipmentRepo.mapToResponse(equipmentUpdated);
 
     return response;
   }
