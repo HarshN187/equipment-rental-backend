@@ -1,12 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-
 import { AutoMap } from '@automapper/classes';
-import { UserDto } from './user.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { IsInt, IsString } from 'class-validator';
+import { GetUserResDto } from './getUserRes.dto';
 
-export class CreateAddressDto {
-  @IsOptional()
+export class GetAddressResDto {
   @AutoMap()
   @ApiProperty()
   @IsInt()
@@ -39,5 +36,5 @@ export class CreateAddressDto {
 
   @AutoMap()
   @ApiProperty()
-  user: number;
+  user: GetUserResDto;
 }

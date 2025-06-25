@@ -5,7 +5,7 @@ import { AddressRepository } from '../repository/address.repository';
 export class DeleteAddressService {
   constructor(private readonly addressRepo: AddressRepository) {}
 
-  async deleteAddress(addressId: number) {
+  async deleteAddress(addressId: number): Promise<boolean> {
     const result = await this.addressRepo.deleteAsync(addressId);
 
     return result;

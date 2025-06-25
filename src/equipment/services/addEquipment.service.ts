@@ -4,15 +4,20 @@ import { CreateEquipmentDto } from '../dto/create-equipment.dto';
 import { CategoryRepository } from '../repository/category.repository';
 import { DbException } from 'src/common/exceptions';
 import { EquipmentDto } from '../dto/equipment.dto';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
+import { GetEquipmentResDto } from '../dto/getEquipmentRes.dto';
 
 @Injectable()
 export class AddEquipmentService {
   constructor(
     private readonly equipmentRepo: EquipmentRepository,
     private readonly categoryRepo: CategoryRepository,
+    @InjectMapper()
+    private readonly mapper: Mapper,
   ) {}
 
-  async addEquipment(body: CreateEquipmentDto): Promise<EquipmentDto> {
+  async addEquipment(body: CreateEquipmentDto): Promise<GetEquipmentResDto> {
     const categoryData = await this.categoryRepo.getAsync(body.category);
 
     if (!categoryData) {
@@ -24,6 +29,12 @@ export class AddEquipmentService {
       category: categoryData,
     } as unknown as EquipmentDto);
 
-    return equipmentAdded;
+    const response = this.mapper.map(
+      equipmentAdded,
+      EquipmentDto,
+      GetEquipmentResDto,
+    );
+
+    return response;
   }
 }

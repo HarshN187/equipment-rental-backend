@@ -5,6 +5,9 @@ import { DbException } from 'src/common/exceptions';
 import { UserRepository } from 'src/user/repository/user.repository';
 import { EquipmentRepository } from 'src/equipment/repository/equipment.repository';
 import { CreateRentalDto } from '../dto/create-rental.dto';
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { GetRentalResDto } from '../dto/getRentalRes.dto';
 
 @Injectable()
 export class AddRentalService {
@@ -12,9 +15,11 @@ export class AddRentalService {
     private readonly rentalRepo: RentalRepository,
     private readonly userRepo: UserRepository,
     private readonly equipmentRepo: EquipmentRepository,
+    @InjectMapper()
+    private readonly mapper: Mapper,
   ) {}
 
-  async createRental(body: CreateRentalDto): Promise<RentalDto> {
+  async createRental(body: CreateRentalDto): Promise<GetRentalResDto> {
     const userData = await this.userRepo.getAsync(body.user);
 
     if (!userData) {
@@ -33,6 +38,8 @@ export class AddRentalService {
       equipment: equipData,
     } as unknown as RentalDto);
 
-    return data;
+    const response = this.mapper.map(data, RentalDto, GetRentalResDto);
+
+    return response;
   }
 }

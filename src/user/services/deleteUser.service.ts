@@ -7,7 +7,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 export class DeleteUserService {
   constructor(private readonly userRepo: UserRepository) {}
 
-  async deleteUser(userId: number) {
+  async deleteUser(userId: number): Promise<boolean> {
     const result = await this.userRepo.deleteAsync(userId);
 
     return result;
