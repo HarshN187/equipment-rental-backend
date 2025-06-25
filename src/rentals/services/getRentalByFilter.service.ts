@@ -1,0 +1,28 @@
+import { Injectable } from '@nestjs/common';
+import { RentalRepository } from '../repository/rentals.repository';
+import { RentalDto } from '../dto/rental.dto';
+
+@Injectable()
+export class GetRentalsByFilterService {
+  constructor(private readonly rentalRepo: RentalRepository) {}
+
+  async getRentals(
+    userId: number = 0,
+    equipmentId: number = 0,
+  ): Promise<RentalDto[]> {
+    let filter: { user?: object; equipment?: object } = {};
+    console.log('object in getRental servie');
+
+    if (userId != 0) {
+      filter.user = { user_id: userId };
+    }
+
+    if (equipmentId != 0) {
+      filter.equipment = { e_id: equipmentId };
+    }
+    console.log(filter);
+    const data = await this.rentalRepo.allAsync(filter);
+
+    return data;
+  }
+}
