@@ -17,17 +17,21 @@ export class AddRentalService {
   async createRental(body: CreateRentalDto): Promise<RentalDto> {
     const userData = await this.userRepo.getAsync(body.user);
 
+    if (!userData) {
+      throw new DbException('data not found for this id');
+    }
+
     const equipData = await this.equipmentRepo.getAsync(body.equipment);
+
+    if (!equipData) {
+      throw new DbException('data not found for this id');
+    }
 
     const data = await this.rentalRepo.createAsync({
       ...body,
       user: userData,
       equipment: equipData,
     } as unknown as RentalDto);
-
-    if (!data) {
-      throw new DbException('data not found');
-    }
 
     return data;
   }

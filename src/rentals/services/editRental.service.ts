@@ -18,9 +18,17 @@ export class EditRentalService {
   async editRental(body: UpdateRentalDto): Promise<RentalDto> {
     const userData = body.user ? await this.userRepo.getAsync(body.user) : {};
 
+    if (!userData) {
+      throw new DbException('data not found for this id');
+    }
+
     const equipData = body.equipment
       ? await this.equipmentRepo.getAsync(body.equipment)
       : {};
+
+    if (!equipData) {
+      throw new DbException('data not found for this id');
+    }
 
     const data = await this.rentalRepo.updateAsync({
       ...body,
