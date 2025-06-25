@@ -26,7 +26,7 @@ export class addAddressService {
       user: userData,
     } as unknown as AddressDto);
 
-    const response = this.mapper.map(result, AddressDto, GetAddressResDto);
+    const response = this.addressRepo.mapToResponse(result);
 
     return response;
   }

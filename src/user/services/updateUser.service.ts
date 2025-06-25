@@ -8,16 +8,12 @@ import { GetUserResDto } from '../dto/getUserRes.dto';
 
 @Injectable()
 export class EditUserService {
-  constructor(
-    private readonly userRepo: UserRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly userRepo: UserRepository) {}
 
   async editUser(body: UpdateUserDto): Promise<GetUserResDto> {
     const result = await this.userRepo.updateAsync(body as unknown as UserDto);
 
-    const response = this.mapper.map(result, UserDto, GetUserResDto);
+    const response = this.userRepo.mapToResponse(result);
 
     return response;
   }

@@ -9,11 +9,7 @@ import { GetEquipmentResDto } from '../dto/getEquipmentRes.dto';
 
 @Injectable()
 export class FindEquipmentBySearchService {
-  constructor(
-    private readonly equipRepo: EquipmentRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly equipRepo: EquipmentRepository) {}
 
   async findEquipment(query: string): Promise<GetEquipmentResDto[]> {
     console.log(query);
@@ -28,11 +24,7 @@ export class FindEquipmentBySearchService {
       throw new DbException('data not found');
     }
 
-    const response = this.mapper.mapArray(
-      result,
-      EquipmentDto,
-      GetEquipmentResDto,
-    );
+    const response = this.equipRepo.mapToResponseArray(result);
 
     return response;
   }

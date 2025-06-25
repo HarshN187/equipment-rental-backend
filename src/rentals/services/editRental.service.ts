@@ -41,7 +41,7 @@ export class EditRentalService {
       equipment: equipData,
     } as unknown as RentalDto);
 
-    const response = this.mapper.map(data, RentalDto, GetRentalResDto);
+    const response = this.rentalRepo.mapToResponse(data);
 
     return response;
   }

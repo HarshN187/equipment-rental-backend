@@ -8,11 +8,7 @@ import { GetCategoryResDto } from '../dto/getCategoryRes.dto';
 
 @Injectable()
 export class GetAllCategoryService {
-  constructor(
-    private readonly categoryRepo: CategoryRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly categoryRepo: CategoryRepository) {}
 
   async getAll(): Promise<GetCategoryResDto[]> {
     const result = await this.categoryRepo.allAsyncWithJoin(
@@ -26,11 +22,7 @@ export class GetAllCategoryService {
       throw new DbException('data not found');
     }
 
-    const response = this.mapper.mapArray(
-      result,
-      categoryDto,
-      GetCategoryResDto,
-    );
+    const response = this.categoryRepo.mapToResponseArray(result);
 
     return response;
   }

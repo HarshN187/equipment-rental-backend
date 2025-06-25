@@ -10,8 +10,7 @@ import { GetRentalResDto } from '../dto/getRentalRes.dto';
 export class getRentalByIdService {
   constructor(
     private readonly rentalRepo: RentalRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
+   
   ) {}
 
   async getRentalById(id: number): Promise<GetRentalResDto> {
@@ -24,7 +23,7 @@ export class getRentalByIdService {
       throw new DbException('data not found');
     }
 
-    const response = this.mapper.map(data, RentalDto, GetRentalResDto);
+    const response = this.rentalRepo.mapToResponse(data);
 
     return response;
   }

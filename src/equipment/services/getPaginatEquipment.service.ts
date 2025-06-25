@@ -7,11 +7,7 @@ import { GetEquipmentResDto } from '../dto/getEquipmentRes.dto';
 
 @Injectable()
 export class GetPaginateEquipmentService {
-  constructor(
-    private readonly equipmentRepo: EquipmentRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly equipmentRepo: EquipmentRepository) {}
 
   async getPaginateEquipments(
     page: number,
@@ -28,11 +24,7 @@ export class GetPaginateEquipmentService {
       { category: true },
     );
 
-    const response = this.mapper.mapArray(
-      result.items,
-      EquipmentDto,
-      GetEquipmentResDto,
-    );
+    const response = this.equipmentRepo.mapToResponseArray(result.items);
 
     return response;
   }
