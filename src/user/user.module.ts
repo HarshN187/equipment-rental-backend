@@ -20,6 +20,7 @@ import { addAddressService } from './services/addUserAddress.service';
 import { DeleteUserService } from './services/deleteUser.service';
 import { DeleteAddressService } from './services/deleteAddress.service';
 import { GetUserPaginationService } from './services/getUserPagination.service';
+import { FindUserBySearchService } from './services/findUserBySearch.service';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { GetUserPaginationService } from './services/getUserPagination.service';
     DeleteUserService,
     DeleteAddressService,
     GetUserPaginationService,
+    FindUserBySearchService,
   ],
   exports: [UserRepository, AddressRepository],
 })
