@@ -7,15 +7,20 @@ import { UserDto } from '../dto/user.dto';
 export class GetUserPaginationService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async getUserPagination(page: number, perPage: number): Promise<UserDto[]> {
+  async getUserPagination(
+    page: number,
+    perPage: number,
+    order: number,
+  ): Promise<UserDto[]> {
     const result = await this.userRepository.pagedAsync({
       $page: page,
       $perPage: perPage,
+      $orderBy: 'user_id',
+      $order: order ? 'ASC' : 'DESC',
     });
     if (!result) {
       throw new DbException('data not found');
     }
-    console.log(result);
 
     return result.items;
   }
