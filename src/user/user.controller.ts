@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
@@ -26,6 +27,7 @@ import { GetUserPaginationService } from './services/getUserPagination.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { FindUserBySearchService } from './services/findUserBySearch.service';
 
 @Controller('user')
 @ApiBearerAuth()
@@ -41,6 +43,7 @@ export class UserController {
     private readonly deleteUserService: DeleteUserService,
     private readonly deleteAddressService: DeleteAddressService,
     private readonly getUserPagination: GetUserPaginationService,
+    private readonly findUserWithSearch: FindUserBySearchService,
   ) {}
 
   @Post()
@@ -92,6 +95,12 @@ export class UserController {
   @Roles(['user'])
   deleteAddress(@Param('id') id: string): Promise<boolean> {
     return this.deleteAddressService.deleteAddress(+id);
+  }
+
+  @Get('search')
+  @Roles(['admin'])
+  findUserBySearch(@Query('query') query: string) {
+    return this.findUserWithSearch.findUser(query);
   }
 
   @Get(':id')

@@ -3,13 +3,14 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ExceptionGlobalExceptionInterceptor } from './common/interceptors/exception-global-filter.interceptor';
 import { AuthGuard } from './common/guards/auth.guard';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // ??
   app.useGlobalInterceptors(new ExceptionGlobalExceptionInterceptor());
-  // app.useGlobalGuards(new AuthGuard());
+  app.useGlobalPipes(new ValidationPipe());
 
   const options = new DocumentBuilder()
     .setTitle('Assessment Api')
