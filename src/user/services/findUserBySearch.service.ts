@@ -4,7 +4,7 @@ import { AddressRepository } from '../repository/address.repository';
 import { AddressDto } from '../dto/address.dto';
 import { UserRepository } from '../repository/user.repository';
 import { UserDto } from '../dto/user.dto';
-import { Like } from 'typeorm';
+import { ILike, Like } from 'typeorm';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { GetUserResDto } from '../dto/getUserRes.dto';
@@ -19,8 +19,8 @@ export class FindUserBySearchService {
 
   async findUser(query: string): Promise<GetUserResDto[]> {
     const result = await this.userRepo.allAsync({
-      name: Like(`%${query}%`),
-      email: Like(`%${query}%`),
+      name: ILike(`%${query}%`),
+      email: ILike(`%${query}%`),
     });
 
     if (!result) {

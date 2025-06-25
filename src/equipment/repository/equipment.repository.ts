@@ -18,12 +18,12 @@ export class EquipmentRepository extends BaseRepo<
 > {
   constructor(
     @InjectRepository(Equipment)
-    private readonly EquipmentRepository: Repository<Equipment>,
+    private readonly equipmentRepository: Repository<Equipment>,
     @InjectMapper()
     readonly mapper: Mapper,
     readonly logger: PinoLogger,
   ) {
-    super(EquipmentRepository, mapper, logger, Equipment, EquipmentDto);
+    super(equipmentRepository, mapper, logger, Equipment, EquipmentDto);
   }
 
   public override get softDeleteEnabled(): boolean {
@@ -36,5 +36,17 @@ export class EquipmentRepository extends BaseRepo<
 
   public override get idColumnName(): keyof Equipment {
     return 'e_id';
+  }
+
+  public async searchEquipment(
+    query,
+    relation?: Array<string>,
+  ): Promise<EquipmentDto[]> {
+    const data = await this.equipmentRepository.find({
+      where: query,
+      relations: relation,
+    });
+
+    return this.mapToModelArray(data);
   }
 }

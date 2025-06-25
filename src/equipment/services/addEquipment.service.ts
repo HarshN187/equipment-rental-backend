@@ -24,10 +24,12 @@ export class AddEquipmentService {
       throw new DbException('data not found for this category');
     }
 
+    const reqData = this.mapper.map(body, CreateEquipmentDto, EquipmentDto);
+
     const equipmentAdded = await this.equipmentRepo.createAsync({
-      ...body,
+      ...reqData,
       category: categoryData,
-    } as unknown as EquipmentDto);
+    });
 
     const response = this.mapper.map(
       equipmentAdded,

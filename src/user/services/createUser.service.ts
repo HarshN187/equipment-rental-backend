@@ -17,10 +17,12 @@ export class CreateUserService {
 
   async createUser(body: CreateUserDto): Promise<GetUserResDto> {
     const encryptPassword = await bcrypt.hash(body.password, 10);
-    const result = await this.userRepo.createAsync({
-      ...body,
-      password: encryptPassword,
-    } as unknown as UserDto);
+
+    body.password = encryptPassword;
+
+    const reqData = this.mapper.map(body, CreateUserDto, UserDto);
+
+    const result = await this.userRepo.createAsync(reqData);
 
     const response = this.mapper.map(result, UserDto, GetUserResDto);
 

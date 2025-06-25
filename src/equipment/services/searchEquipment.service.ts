@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DbException } from 'src/common/exceptions';
-import { Like } from 'typeorm';
+import { ILike, Like } from 'typeorm';
 import { EquipmentRepository } from '../repository/equipment.repository';
 import { EquipmentDto } from '../dto/equipment.dto';
 import { Mapper } from '@automapper/core';
@@ -17,12 +17,10 @@ export class FindEquipmentBySearchService {
 
   async findEquipment(query: string): Promise<GetEquipmentResDto[]> {
     console.log(query);
-    const result = await this.equipRepo.allAsync({
-      name: Like(`%${query}%`),
-      //   description: Like(`%${query}%`),
-      $orderBy: 'e_id',
-      $order: 'asc',
-    });
+    const result = await this.equipRepo.searchEquipment(
+      [{ name: ILike(`%${query}%`) }, { description: ILike(`%${query}%`) }],
+      ['category'],
+    );
 
     console.log(result);
 
