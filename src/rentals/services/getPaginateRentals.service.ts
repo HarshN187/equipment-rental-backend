@@ -7,11 +7,7 @@ import { GetRentalResDto } from '../dto/getRentalRes.dto';
 
 @Injectable()
 export class GetRentalsPaginateService {
-  constructor(
-    private readonly rentalRepo: RentalRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly rentalRepo: RentalRepository) {}
 
   async getPaginateRentals(
     page: number,
@@ -25,11 +21,7 @@ export class GetRentalsPaginateService {
       $order: order ? 'ASC' : 'DESC',
     });
 
-    const response = this.mapper.mapArray(
-      data.items,
-      RentalDto,
-      GetRentalResDto,
-    );
+    const response = this.rentalRepo.mapToResponseArray(data.items);
 
     return response;
   }

@@ -11,11 +11,7 @@ import { GetUserResDto } from '../dto/getUserRes.dto';
 
 @Injectable()
 export class FindUserBySearchService {
-  constructor(
-    private readonly userRepo: UserRepository,
-    @InjectMapper()
-    private readonly mapper: Mapper,
-  ) {}
+  constructor(private readonly userRepo: UserRepository) {}
 
   async findUser(query: string): Promise<GetUserResDto[]> {
     const result = await this.userRepo.allAsync({
@@ -27,7 +23,7 @@ export class FindUserBySearchService {
       throw new DbException('data not found');
     }
 
-    const response = this.mapper.mapArray(result, UserDto, GetUserResDto);
+    const response = this.userRepo.mapToResponseArray(result);
 
     return response;
   }

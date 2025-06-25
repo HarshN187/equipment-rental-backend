@@ -29,7 +29,7 @@ import { GetCategoryResDto } from './dto/getCategoryRes.dto';
 
 @Controller('equipment')
 @ApiBearerAuth()
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class EquipmentController {
   constructor(
     private readonly getAllEquipService: GetAllEquipmentService,

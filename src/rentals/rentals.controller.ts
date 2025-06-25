@@ -26,7 +26,7 @@ import { GetRentalResDto } from './dto/getRentalRes.dto';
 
 @Controller('rentals')
 @ApiBearerAuth()
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class RentalsController {
   constructor(
     private readonly getAllRentalService: getAllRentalService,

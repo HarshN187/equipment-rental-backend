@@ -7,6 +7,7 @@ import { PinoLogger } from 'nestjs-pino';
 import { BaseRepo } from '../../common/base.repo';
 import { Equipment } from '../entities/equipment.entity';
 import { EquipmentDto } from '../dto/equipment.dto';
+import { GetEquipmentResDto } from '../dto/getEquipmentRes.dto';
 
 @Injectable()
 export class EquipmentRepository extends BaseRepo<
@@ -48,5 +49,13 @@ export class EquipmentRepository extends BaseRepo<
     });
 
     return this.mapToModelArray(data);
+  }
+
+  public mapToResponse(body: EquipmentDto) {
+    return this.mapper.map(body, EquipmentDto, GetEquipmentResDto);
+  }
+
+  public mapToResponseArray(body: EquipmentDto[]) {
+    return this.mapper.mapArray(body, EquipmentDto, GetEquipmentResDto);
   }
 }

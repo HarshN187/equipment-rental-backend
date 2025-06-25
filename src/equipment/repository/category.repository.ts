@@ -7,6 +7,7 @@ import { PinoLogger } from 'nestjs-pino';
 import { BaseRepo } from '../../common/base.repo';
 import { Category } from '../entities/category.entity';
 import { categoryDto } from '../dto/category.dto';
+import { GetCategoryResDto } from '../dto/getCategoryRes.dto';
 
 @Injectable()
 export class CategoryRepository extends BaseRepo<
@@ -36,5 +37,13 @@ export class CategoryRepository extends BaseRepo<
 
   public override get idColumnName(): keyof Category {
     return 'category_id';
+  }
+
+  public mapToResponse(body: categoryDto) {
+    return this.mapper.map(body, categoryDto, GetCategoryResDto);
+  }
+
+  public mapToResponseArray(body: categoryDto[]) {
+    return this.mapper.mapArray(body, categoryDto, GetCategoryResDto);
   }
 }
