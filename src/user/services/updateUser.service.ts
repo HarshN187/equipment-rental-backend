@@ -2,14 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../repository/user.repository';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserDto } from '../dto/user.dto';
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { GetUserResDto } from '../dto/getUserRes.dto';
 
 @Injectable()
 export class EditUserService {
-  constructor(private readonly userRepo: UserRepository) {}
+  constructor(
+    private readonly userRepo: UserRepository,
+    @InjectMapper()
+    private readonly mapper: Mapper,
+  ) {}
 
-  async editUser(body: UpdateUserDto): Promise<UserDto> {
+  async editUser(body: UpdateUserDto): Promise<GetUserResDto> {
     const result = await this.userRepo.updateAsync(body as unknown as UserDto);
 
-    return result;
+    const response = this.mapper.map(result, UserDto, GetUserResDto);
+
+    return response;
   }
 }

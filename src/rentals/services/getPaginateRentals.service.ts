@@ -1,16 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { RentalRepository } from '../repository/rentals.repository';
 import { RentalDto } from '../dto/rental.dto';
+import { Mapper } from '@automapper/core';
+import { InjectMapper } from '@automapper/nestjs';
+import { GetRentalResDto } from '../dto/getRentalRes.dto';
 
 @Injectable()
 export class GetRentalsPaginateService {
-  constructor(private readonly rentalRepo: RentalRepository) {}
+  constructor(
+    private readonly rentalRepo: RentalRepository,
+    @InjectMapper()
+    private readonly mapper: Mapper,
+  ) {}
 
   async getPaginateRentals(
     page: number,
     perPage: number,
     order: number,
-  ): Promise<RentalDto[]> {
+  ): Promise<GetRentalResDto[]> {
     const data = await this.rentalRepo.pagedAsync({
       $page: page,
       $perPage: perPage,
@@ -18,6 +25,12 @@ export class GetRentalsPaginateService {
       $order: order ? 'ASC' : 'DESC',
     });
 
-    return data.items;
+    const response = this.mapper.mapArray(
+      data.items,
+      RentalDto,
+      GetRentalResDto,
+    );
+
+    return response;
   }
 }

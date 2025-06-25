@@ -31,4 +31,6 @@ export class UserRepository extends BaseRepo<User, UserDto, number, {}, {}> {
   public override get softDeleteColumnName(): keyof User {
     return 'deleted_at';
   }
+
+ 
 }
