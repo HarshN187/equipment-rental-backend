@@ -99,7 +99,7 @@ export class UserController {
 
   @Get('search')
   @Roles(['admin'])
-  findUserBySearch(@Query('query') query: string) {
+  findUserBySearch(@Query('query') query: string): Promise<UserDto[]> {
     return this.findUserWithSearch.findUser(query);
   }
 

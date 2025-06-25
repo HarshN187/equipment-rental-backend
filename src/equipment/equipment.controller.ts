@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
@@ -22,6 +23,7 @@ import { GetPaginateEquipmentService } from './services/getPaginatEquipment.serv
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { FindEquipmentBySearchService } from './services/searchEquipment.service';
 
 @Controller('equipment')
 @ApiBearerAuth()
@@ -35,6 +37,7 @@ export class EquipmentController {
     private readonly editEquipService: editEquipmentService,
     private readonly removeEquipService: RemoveEquipmentService,
     private readonly getPaginateEquipService: GetPaginateEquipmentService,
+    private readonly searchEquipmentService: FindEquipmentBySearchService,
   ) {}
 
   @Post()
@@ -64,6 +67,12 @@ export class EquipmentController {
   @Roles(['admin', 'user'])
   findAllCategory(): Promise<categoryDto[]> {
     return this.getAllCategoryService.getAll();
+  }
+
+  @Get('search')
+  @Roles(['user', 'admin'])
+  searchEquipment(@Query('query') query: string): Promise<EquipmentDto[]> {
+    return this.searchEquipmentService.findEquipment(query);
   }
 
   @Get(':id')
