@@ -13,6 +13,7 @@ import { AddEquipmentService } from './services/addEquipment.service';
 import { editEquipmentService } from './services/editEquipment.service';
 import { RemoveEquipmentService } from './services/removeEquipment.service';
 import { GetPaginateEquipmentService } from './services/getPaginatEquipment.service';
+import { FindEquipmentBySearchService } from './services/searchEquipment.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Equipment, Category])],
@@ -28,6 +29,7 @@ import { GetPaginateEquipmentService } from './services/getPaginatEquipment.serv
     editEquipmentService,
     RemoveEquipmentService,
     GetPaginateEquipmentService,
+    FindEquipmentBySearchService,
   ],
   exports: [EquipmentRepository, CategoryRepository],
 })
