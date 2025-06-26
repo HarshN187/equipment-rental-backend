@@ -4,12 +4,15 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Address } from './address.entity';
 import { AutoMap } from '@automapper/classes';
+import { Roles } from 'src/auth/entities/roles.entity';
 
 @Entity()
 export class User {
@@ -22,8 +25,8 @@ export class User {
   name: string;
 
   @AutoMap()
-  @Column({ default: 'user' })
-  role: string;
+  @ManyToOne(() => Roles, (role) => role.users)
+  role: Roles;
 
   @AutoMap()
   @Column()

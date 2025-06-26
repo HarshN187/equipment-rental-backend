@@ -26,11 +26,23 @@ import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { VeryfyTokenMiddleware } from './common/middleware/verifyToken.middleware';
+import { RolesPermission } from './auth/entities/roles_permission.entity';
+import { Roles } from './auth/entities/roles.entity';
+import { Permissions } from './auth/entities/permissions.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(AppDataSource.options),
-    TypeOrmModule.forFeature([User, Address, Equipment, Category, Rental]),
+    TypeOrmModule.forFeature([
+      User,
+      Address,
+      Equipment,
+      Category,
+      Rental,
+      RolesPermission,
+      Roles,
+      Permissions,
+    ]),
     ConfigModule.forRoot({
       isGlobal: true,
     }),

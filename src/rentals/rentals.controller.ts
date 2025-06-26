@@ -21,7 +21,7 @@ import { EditRentalService } from './services/editRental.service';
 import { RemoveRentalService } from './services/removeRental.service';
 import { GetRentalsPaginateService } from './services/getPaginateRentals.service';
 import { AuthGuard } from 'src/common/guards/auth.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { Permission } from 'src/common/decorators/permission.decorator';
 import { GetRentalResDto } from './dto/getRentalRes.dto';
 
 @Controller('rentals')
@@ -39,19 +39,22 @@ export class RentalsController {
   ) {}
 
   @Post()
-  @Roles(['admin', 'user'])
+  // @Permission(['admin', 'user'])
+  @Permission(['createRental'])
   create(@Body() createRentalDto: CreateRentalDto): Promise<GetRentalResDto> {
     return this.addRentalService.createRental(createRentalDto);
   }
 
   @Get()
-  @Roles(['admin'])
+  // @Permission(['admin'])
+  @Permission(['getAllRentals'])
   getAllRentals(): Promise<GetRentalResDto[]> {
     return this.getAllRentalService.getAll();
   }
 
   @Get('filter')
-  @Roles(['admin'])
+  // @Permission(['admin'])
+  @Permission(['findRentalByFilter'])
   @ApiQuery({ name: 'id', required: false }) // Mark id as optional
   @ApiQuery({ name: 'e_id', required: false }) // Mark e_id as optional
   findRentalByFilter(
@@ -66,7 +69,8 @@ export class RentalsController {
   }
 
   @Patch(':id')
-  @Roles(['admin'])
+  // @Permission(['admin'])
+  @Permission(['updateRental'])
   updateRental(
     @Param('id') id: string,
     @Body() updateRentalDto: UpdateRentalDto,
@@ -75,13 +79,13 @@ export class RentalsController {
   }
 
   @Delete(':id')
-  @Roles(['admin'])
+  @Permission(['removeRental'])
   removeRental(@Param('id') id: string): Promise<boolean> {
     return this.removeRentalService.removeRental(+id);
   }
 
   @Get('/paginate/:page/:perPage')
-  @Roles(['admin'])
+  @Permission(['getRentalPaginate'])
   getRentalPaginate(
     @Param('page') page: string,
     @Param('perPage') perPage: string,
@@ -95,7 +99,7 @@ export class RentalsController {
   }
 
   @Get(':id')
-  @Roles(['admin', 'user'])
+  @Permission(['findRentalById'])
   findRentalById(@Param('id') id: string): Promise<GetRentalResDto> {
     return this.getRentalByIdService.getRentalById(+id);
   }

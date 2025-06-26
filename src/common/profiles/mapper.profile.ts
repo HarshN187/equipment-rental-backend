@@ -8,6 +8,12 @@ import {
 } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
+import { PermissionDto } from 'src/auth/dto/permission.dto';
+import { RolesDto } from 'src/auth/dto/roles.dto';
+import { RolesPermissionDto } from 'src/auth/dto/rolesPermission.dto';
+import { Permissions } from 'src/auth/entities/permissions.entity';
+import { Roles } from 'src/auth/entities/roles.entity';
+import { RolesPermission } from 'src/auth/entities/roles_permission.entity';
 import { categoryDto } from 'src/equipment/dto/category.dto';
 import { CreateEquipmentDto } from 'src/equipment/dto/create-equipment.dto';
 import { EquipmentDto } from 'src/equipment/dto/equipment.dto';
@@ -37,17 +43,18 @@ export class mapperProfile extends AutomapperProfile {
 
   override get profile() {
     return (mapper: Mapper) => {
+      createMap(mapper, EquipmentDto, GetEquipmentResDto);
+
+      // createMap(mapper, RolesDto, Roles);
+      createMap(mapper, Permissions, PermissionDto);
+      createMap(mapper, Roles, RolesDto);
       createMap(
         mapper,
-        User,
-        UserDto,
+        RolesPermission,
+        RolesPermissionDto,
         forMember(
-          (d) => d.addresses,
-          mapFrom((e) => e.addresses),
-        ),
-        forMember(
-          (d) => d.rentals,
-          mapFrom((e) => e.rentals),
+          (d) => d.role,
+          mapFrom((e) => e.role),
         ),
       );
       createMap(mapper, Address, AddressDto);
@@ -62,7 +69,19 @@ export class mapperProfile extends AutomapperProfile {
         ),
       );
       createMap(mapper, Rental, RentalDto);
-      createMap(mapper, EquipmentDto, GetEquipmentResDto);
+      createMap(
+        mapper,
+        User,
+        UserDto,
+        forMember(
+          (d) => d.addresses,
+          mapFrom((e) => e.addresses),
+        ),
+        forMember(
+          (d) => d.rentals,
+          mapFrom((e) => e.rentals),
+        ),
+      );
       createMap(
         mapper,
         categoryDto,

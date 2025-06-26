@@ -4,6 +4,7 @@ import { IsInt, IsOptional, IsString } from 'class-validator';
 import { GetAddressResDto } from './getAddress.dto';
 import { AddressDto } from './address.dto';
 import { RentalDto } from 'src/rentals/dto/rental.dto';
+import { RolesDto } from 'src/auth/dto/roles.dto';
 
 export class UserDto {
   @AutoMap()
@@ -19,7 +20,7 @@ export class UserDto {
   phone: string;
 
   @AutoMap()
-  role: string;
+  role: RolesDto;
 
   @AutoMap()
   password: string;

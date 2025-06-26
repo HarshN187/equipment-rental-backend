@@ -14,7 +14,12 @@ export class AuthService {
 
   async loginUser(body: loginDto) {
     console.log(body);
-    const user = await this.userRepo.allAsync({ email: body.email });
+    const user = await this.userRepo.allAsyncWithJoin(
+      { email: body.email },
+      {
+        role: true,
+      },
+    );
 
     if (!user.length) {
       throw new DbException('User Not Found');
@@ -32,7 +37,7 @@ export class AuthService {
     const token = this.jwtService.sign({
       email: body.email,
       id: user[0].user_id,
-      role: user[0].role,
+      role: user[0].role.id,
     });
 
     return token;
