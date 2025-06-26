@@ -21,10 +21,20 @@ import { DeleteUserService } from './services/deleteUser.service';
 import { DeleteAddressService } from './services/deleteAddress.service';
 import { GetUserPaginationService } from './services/getUserPagination.service';
 import { FindUserBySearchService } from './services/findUserBySearch.service';
+import { Permissions } from 'src/auth/entities/permissions.entity';
+import { Roles } from 'src/auth/entities/roles.entity';
+import { RolesPermission } from 'src/auth/entities/roles_permission.entity';
+import { RolesPermissionRepository } from 'src/auth/repository/rolesPermission.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Address]),
+    TypeOrmModule.forFeature([
+      User,
+      Address,
+      RolesPermission,
+      Roles,
+      Permissions,
+    ]),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -63,6 +73,7 @@ import { FindUserBySearchService } from './services/findUserBySearch.service';
     DeleteAddressService,
     GetUserPaginationService,
     FindUserBySearchService,
+    RolesPermissionRepository,
   ],
   exports: [UserRepository, AddressRepository],
 })

@@ -194,7 +194,7 @@ export abstract class BaseReadOnlyRepo<
       const opts = this.createFilterOpts(filterObj);
 
       const es = await this.internalRepo.find({ ...opts, relations: relation });
-      console.log(es);
+      // console.log(es);
       return this.mapToModelArray(es);
     } catch (ex) {
       this.logger.error(ex);

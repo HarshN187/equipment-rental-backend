@@ -10,11 +10,14 @@ import { GetEquipmentResDto } from '../dto/getEquipmentRes.dto';
 export class GetAllEquipmentService {
   constructor(private readonly equipmentRepo: EquipmentRepository) {}
 
-  async getAllEquipments(): Promise<GetEquipmentResDto[]> {
-    const result = await this.equipmentRepo.allAsyncWithJoin(
-      {},
-      { category: true },
-    );
+  async getAllEquipments(status: number): Promise<GetEquipmentResDto[]> {
+    let filter = {};
+
+    isNaN(status) ? '' : (filter['available'] = status ? 1 : 0);
+
+    const result = await this.equipmentRepo.allAsyncWithJoin(filter, {
+      category: true,
+    });
 
     if (!result) {
       throw new DbException('data not found');
