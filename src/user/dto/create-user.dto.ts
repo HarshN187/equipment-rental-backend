@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsInt, IsOptional, IsString } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
+import { UserDto } from './user.dto';
+import { RolesDto } from 'src/auth/dto/roles.dto';
 
 export class CreateUserDto {
   // @ApiProperty()
@@ -28,7 +30,7 @@ export class CreateUserDto {
   })
   @AutoMap()
   @IsString()
-  role: string;
+  role: RolesDto;
 
   @ApiProperty({
     minLength: 10,

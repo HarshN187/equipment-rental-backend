@@ -14,9 +14,22 @@ import { AddRentalService } from './services/addRental.service';
 import { EditRentalService } from './services/editRental.service';
 import { RemoveRentalService } from './services/removeRental.service';
 import { GetRentalsPaginateService } from './services/getPaginateRentals.service';
+import { Permissions } from 'src/auth/entities/permissions.entity';
+import { Roles } from 'src/auth/entities/roles.entity';
+import { RolesPermission } from 'src/auth/entities/roles_permission.entity';
+import { RolesPermissionRepository } from 'src/auth/repository/rolesPermission.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Rental, User, Equipment])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Rental,
+      User,
+      Equipment,
+      RolesPermission,
+      Roles,
+      Permissions,
+    ]),
+  ],
   controllers: [RentalsController],
   providers: [
     RentalRepository,
@@ -24,6 +37,7 @@ import { GetRentalsPaginateService } from './services/getPaginateRentals.service
     getRentalByIdService,
     GetRentalsByFilterService,
     UserRepository,
+    RolesPermissionRepository,
     EquipmentRepository,
     AddRentalService,
     EditRentalService,

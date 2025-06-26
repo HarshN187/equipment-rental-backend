@@ -25,7 +25,7 @@ import { DeleteUserService } from './services/deleteUser.service';
 import { DeleteAddressService } from './services/deleteAddress.service';
 import { GetUserPaginationService } from './services/getUserPagination.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { Permission } from 'src/common/decorators/permission.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { FindUserBySearchService } from './services/findUserBySearch.service';
 import { GetUserResDto } from './dto/getUserRes.dto';
@@ -49,13 +49,13 @@ export class UserController {
   ) {}
 
   @Post()
-  // @Roles(['user'])
+  // @Permission(['user'])
   create(@Body() createUserDto: CreateUserDto): Promise<GetUserResDto> {
     return this.createUserService.createUser(createUserDto);
   }
 
   @Post('address')
-  @Roles(['user'])
+  @Permission(['addAddress'])
   addAddress(
     @Body() createAddressDto: CreateAddressDto,
   ): Promise<GetAddressResDto> {
@@ -63,19 +63,19 @@ export class UserController {
   }
 
   @Get()
-  @Roles(['admin'])
+  @Permission(['findAllUser'])
   findAllUser(): Promise<GetUserResDto[]> {
     return this.getAllUserService.getAllUser();
   }
 
   @Get('/:id/address')
-  @Roles(['user', 'admin'])
+  @Permission(['getUserAddresses'])
   getUserAddresses(@Param('id') userId: string): Promise<GetAddressResDto[]> {
     return this.getUserAddressService.getUserAddresses(+userId);
   }
 
   @Get('/pagination/:perPage/:page')
-  @Roles(['admin'])
+  @Permission(['getUserPagination'])
   getUserWithPagination(
     @Param('perPage') perPage: string,
     @Param('page') page: string,
@@ -85,32 +85,36 @@ export class UserController {
   }
 
   @Patch()
-  @Roles(['user', 'admin'])
+  @Permission(['updateUser'])
   updateUser(@Body() updateUserDto: UpdateUserDto): Promise<GetUserResDto> {
     return this.editUserService.editUser(updateUserDto);
   }
 
   @Delete(':id')
-  @Roles(['user', 'admin'])
+  // @Permission(['user', 'admin'])
+  @Permission(['deleteUser'])
   deleteUser(@Param('id') id: string): Promise<boolean> {
     return this.deleteUserService.deleteUser(+id);
   }
 
   @Delete('address/:id')
-  @Roles(['user'])
+  // @Permission(['user'])
+  @Permission(['deleteAddress'])
   deleteAddress(@Param('id') id: string): Promise<boolean> {
     return this.deleteAddressService.deleteAddress(+id);
   }
 
   @Get('search')
-  @Roles(['admin'])
+  // @Permission(['admin'])
+  @Permission(['findUserBySearch'])
   findUserBySearch(@Query('query') query: string): Promise<GetUserResDto[]> {
     return this.findUserWithSearch.findUser(query);
   }
 
   @Get(':id')
-  @Roles(['user', 'admin'])
-  findOneUser(@Param('id') userId: string): Promise<GetUserResDto> {
+  // @Permission(['user', 'admin'])
+  @Permission(['findOneUserWithDetails'])
+  findOneUserWithDetails(@Param('id') userId: string): Promise<GetUserResDto> {
     return this.getUserByIdService.getUserById(+userId);
   }
 }

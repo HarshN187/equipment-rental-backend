@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsInt, IsOptional, IsString } from 'class-validator';
 import { GetAddressResDto } from './getAddress.dto';
 import { GetRentalResDto } from 'src/rentals/dto/getRentalRes.dto';
+import { RolesDto } from 'src/auth/dto/roles.dto';
 
 export class GetUserResDto {
   @ApiProperty()
@@ -24,7 +25,7 @@ export class GetUserResDto {
   @ApiProperty()
   @AutoMap()
   @IsString()
-  role: string;
+  role: RolesDto;
 
   @ApiProperty()
   @AutoMap()

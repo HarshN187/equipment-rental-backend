@@ -15,14 +15,12 @@ import { GetAllEquipmentService } from './services/getAllEquipments.service';
 import { GetEquipmentbyIdService } from './services/getEquipById.service';
 import { GetAllCategoryService } from './services/getAllCategory.service';
 import { AddEquipmentService } from './services/addEquipment.service';
-import { EquipmentDto } from './dto/equipment.dto';
-import { categoryDto } from './dto/category.dto';
 import { editEquipmentService } from './services/editEquipment.service';
 import { RemoveEquipmentService } from './services/removeEquipment.service';
 import { GetPaginateEquipmentService } from './services/getPaginatEquipment.service';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { AuthGuard } from 'src/common/guards/auth.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { Permission } from 'src/common/decorators/permission.decorator';
 import { FindEquipmentBySearchService } from './services/searchEquipment.service';
 import { GetEquipmentResDto } from './dto/getEquipmentRes.dto';
 import { GetCategoryResDto } from './dto/getCategoryRes.dto';
@@ -43,7 +41,8 @@ export class EquipmentController {
   ) {}
 
   @Post()
-  @Roles(['admin'])
+  // @Permission(['admin'])
+  @Permission(['addEquipment'])
   addEquipment(
     @Body() createEquipmentDto: CreateEquipmentDto,
   ): Promise<GetEquipmentResDto> {
@@ -51,13 +50,18 @@ export class EquipmentController {
   }
 
   @Get()
-  @Roles(['admin', 'user'])
-  findAllEquipment(): Promise<GetEquipmentResDto[]> {
-    return this.getAllEquipService.getAllEquipments();
+  // @Permission(['admin', 'user'])
+  @Permission(['findAllEquipment'])
+  @ApiQuery({ name: 'available', required: false }) // Mark id as optional
+  findAllEquipment(
+    @Query('available') status: number,
+  ): Promise<GetEquipmentResDto[]> {
+    return this.getAllEquipService.getAllEquipments(+status);
   }
 
   @Get(':page/:perPage')
-  @Roles(['admin', 'user'])
+  // @Permission(['admin', 'user'])
+  @Permission(['findPaginatEquipment'])
   findPaginatEquipment(
     @Param('page') page: string,
     @Param('perPage') perPage: string,
@@ -71,13 +75,15 @@ export class EquipmentController {
   }
 
   @Get('/category')
-  @Roles(['admin', 'user'])
+  // @Permission(['admin', 'user'])
+  @Permission(['findAllCategory'])
   findAllCategory(): Promise<GetCategoryResDto[]> {
     return this.getAllCategoryService.getAll();
   }
 
   @Get('search')
-  @Roles(['user', 'admin'])
+  // @Permission(['user', 'admin'])
+  @Permission(['searchEquipment'])
   searchEquipment(
     @Query('query') query: string,
   ): Promise<GetEquipmentResDto[]> {
@@ -85,13 +91,15 @@ export class EquipmentController {
   }
 
   @Get(':id')
-  @Roles(['admin', 'user'])
+  // @Permission(['admin', 'user'])
+  @Permission(['findOneEquipment'])
   findOneEquipment(@Param('id') id: string): Promise<GetEquipmentResDto> {
     return this.getEquipByIdService.getEquipment(+id);
   }
 
   @Patch(':id')
-  @Roles(['admin'])
+  // @Permission(['admin'])
+  @Permission(['updateEquipment'])
   updateEquipment(
     @Param('id') id: string,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
@@ -100,7 +108,8 @@ export class EquipmentController {
   }
 
   @Delete(':id')
-  @Roles(['admin'])
+  // @Permission(['admin'])
+  @Permission(['removeEquip'])
   remove(@Param('id') id: string): Promise<boolean> {
     return this.removeEquipService.RemoveEquipment(+id);
   }

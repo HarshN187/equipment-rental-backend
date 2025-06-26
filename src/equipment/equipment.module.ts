@@ -14,9 +14,21 @@ import { editEquipmentService } from './services/editEquipment.service';
 import { RemoveEquipmentService } from './services/removeEquipment.service';
 import { GetPaginateEquipmentService } from './services/getPaginatEquipment.service';
 import { FindEquipmentBySearchService } from './services/searchEquipment.service';
+import { RolesPermission } from 'src/auth/entities/roles_permission.entity';
+import { Roles } from 'src/auth/entities/roles.entity';
+import { Permissions } from 'src/auth/entities/permissions.entity';
+import { RolesPermissionRepository } from 'src/auth/repository/rolesPermission.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Equipment, Category])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Equipment,
+      Category,
+      RolesPermission,
+      Roles,
+      Permissions,
+    ]),
+  ],
   controllers: [EquipmentController],
   providers: [
     EquipmentRepository,
@@ -26,6 +38,7 @@ import { FindEquipmentBySearchService } from './services/searchEquipment.service
     GetEquipmentbyIdService,
     GetAllCategoryService,
     AddEquipmentService,
+    RolesPermissionRepository,
     editEquipmentService,
     RemoveEquipmentService,
     GetPaginateEquipmentService,

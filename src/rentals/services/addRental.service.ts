@@ -32,6 +32,9 @@ export class AddRentalService {
       throw new DbException('data not found for this id');
     }
 
+    equipData.available = false;
+    const updateEquip = await this.equipmentRepo.updateAsync(equipData);
+
     const reqData = this.mapper.map(body, CreateRentalDto, RentalDto);
 
     console.log(reqData);
@@ -39,7 +42,7 @@ export class AddRentalService {
     const data = await this.rentalRepo.createAsync({
       ...reqData,
       user: userData,
-      equipment: equipData,
+      equipment: updateEquip,
     });
 
     const response = this.rentalRepo.mapToResponse(data);
