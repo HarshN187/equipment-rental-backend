@@ -12,7 +12,9 @@ export class GetAllUserService {
 
   async getAllUser(): Promise<GetUserResDto[]> {
     const result = await this.userRepo.allAsyncWithJoin(
-      {},
+      {
+        role: { name: 'user' },
+      },
       {
         role: true,
       },

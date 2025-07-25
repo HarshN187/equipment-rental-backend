@@ -36,9 +36,13 @@ export class GetRentalResDto {
 
   @ApiProperty()
   @AutoMap()
-  created_at: Date;
+  quantity: number;
 
   @ApiProperty()
   @AutoMap()
-  updated_at: Date;
+  created_at: Date;
+
+  // @ApiProperty()
+  // @AutoMap()
+  // updated_at: Date;
 }

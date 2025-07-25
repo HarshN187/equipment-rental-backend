@@ -68,6 +68,7 @@ export class mapperProfile extends AutomapperProfile {
           mapFrom((e) => e.equipments),
         ),
       );
+      // createMap()
       createMap(mapper, Rental, RentalDto);
       createMap(
         mapper,

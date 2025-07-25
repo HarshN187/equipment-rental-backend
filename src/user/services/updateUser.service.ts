@@ -11,8 +11,14 @@ export class EditUserService {
   constructor(private readonly userRepo: UserRepository) {}
 
   async editUser(body: UpdateUserDto): Promise<GetUserResDto> {
-    const result = await this.userRepo.updateAsync(body as unknown as UserDto);
+    body.role = {
+      id: 2,
+      name: 'user',
+    };
 
+    body.user_id = Number(body.user_id);
+    const result = await this.userRepo.updateAsync(body as unknown as UserDto);
+    console.log(result);
     const response = this.userRepo.mapToResponse(result);
 
     return response;

@@ -14,20 +14,30 @@ export class GetUserPaginationService {
     page: number,
     perPage: number,
     order: number,
-  ): Promise<GetUserResDto[]> {
+    query: string,
+  ) {
+    let searchQuery = {};
+    if (query) {
+      searchQuery['name'] = query;
+    }
+
     const result = await this.userRepository.pagedAsync({
       $page: page,
       $perPage: perPage,
       $orderBy: 'user_id',
       $order: order ? 'ASC' : 'DESC',
+      role: { name: 'user' },
+      ...searchQuery,
     });
 
     if (!result) {
       throw new DbException('data not found');
     }
 
+    const userCount = await this.userRepository.countAsync({});
+
     const response = this.userRepository.mapToResponseArray(result.items);
 
-    return response;
+    return { userData: [...response], total_count: userCount };
   }
 }

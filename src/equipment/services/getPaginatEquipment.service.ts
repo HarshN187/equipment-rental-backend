@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { EquipmentRepository } from '../repository/equipment.repository';
-import { EquipmentDto } from '../dto/equipment.dto';
-import { Mapper } from '@automapper/core';
-import { InjectMapper } from '@automapper/nestjs';
 import { GetEquipmentResDto } from '../dto/getEquipmentRes.dto';
 
 @Injectable()

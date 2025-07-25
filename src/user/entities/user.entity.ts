@@ -37,7 +37,9 @@ export class User {
   phone: string;
 
   @AutoMap()
-  @Column()
+  @Column({
+    nullable: true,
+  })
   password: string;
 
   @AutoMap()

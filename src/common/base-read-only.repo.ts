@@ -125,7 +125,9 @@ export abstract class BaseReadOnlyRepo<
     }
   }
 
-  public async pagedAsync(filterObj: TPageableFilter): Promise<IPageable<T>> {
+  public async pagedAsync(
+    filterObj: TPageableFilter & TFilter,
+  ): Promise<IPageable<T>> {
     try {
       const opts = this.createFilterOpts(filterObj);
       const [es, count] = await this.internalRepo.findAndCount(opts);
@@ -241,6 +243,7 @@ export abstract class BaseReadOnlyRepo<
         ...this.softDeleteFilterOptions(),
       };
     }
+
     return opts;
   }
 

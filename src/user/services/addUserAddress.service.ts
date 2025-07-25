@@ -17,6 +17,7 @@ export class addAddressService {
   ) {}
 
   async createAddress(body: CreateAddressDto): Promise<GetAddressResDto> {
+    console.log(body);
     const userData = await this.getUserByIdService.getUserById(body.user);
 
     const reqData = this.mapper.map(body, CreateAddressDto, AddressDto);

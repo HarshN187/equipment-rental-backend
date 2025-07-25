@@ -32,6 +32,14 @@ export class Equipment {
 
   @AutoMap()
   @Column()
+  total_quntity: number;
+
+  @AutoMap()
+  @Column()
+  available_quntity: number;
+
+  @AutoMap()
+  @Column()
   available: boolean;
 
   @AutoMap()

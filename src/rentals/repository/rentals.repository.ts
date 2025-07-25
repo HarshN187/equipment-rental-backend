@@ -43,7 +43,7 @@ export class RentalRepository extends BaseRepo<
   }
 
   //   public override get idColumnName(): keyof Category {
-  //     return 'category_id';
+  //     return 'cat_id';
   //   }
 
   public mapToResponse(body: RentalDto) {

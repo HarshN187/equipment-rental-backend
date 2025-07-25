@@ -17,6 +17,14 @@ export class GetEquipmentResDto {
 
   @AutoMap()
   @ApiProperty()
+  total_quntity: number;
+
+  @AutoMap()
+  @ApiProperty()
+  available_quntity: number;
+
+  @AutoMap()
+  @ApiProperty()
   rent_per_day: number;
 
   @AutoMap()
@@ -34,5 +42,4 @@ export class GetEquipmentResDto {
   @AutoMap()
   @ApiProperty()
   updated_at: Date;
-
 }

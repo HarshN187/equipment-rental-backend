@@ -27,11 +27,14 @@ export class RentalDto {
   payment_status: string;
 
   @AutoMap()
+  quantity: number;
+
+  // @AutoMap()
   created_at: Date;
 
-  @AutoMap()
+  // @AutoMap()
   updated_at: Date;
 
-  @AutoMap()
+  // @AutoMap()
   deleted_at: Date;
 }

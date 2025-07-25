@@ -5,7 +5,7 @@ import { GetEquipmentResDto } from './getEquipmentRes.dto';
 export class GetCategoryResDto {
   @AutoMap()
   @ApiProperty()
-  category_id: number;
+  cat_id: number;
 
   @AutoMap()
   @ApiProperty()

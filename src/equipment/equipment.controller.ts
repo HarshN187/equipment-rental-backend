@@ -24,10 +24,12 @@ import { Permission } from 'src/common/decorators/permission.decorator';
 import { FindEquipmentBySearchService } from './services/searchEquipment.service';
 import { GetEquipmentResDto } from './dto/getEquipmentRes.dto';
 import { GetCategoryResDto } from './dto/getCategoryRes.dto';
+import { AddCategoryService } from './services/addCategory.service';
+import { createCategoryDto } from './dto/creare-category.dto';
 
 @Controller('equipment')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class EquipmentController {
   constructor(
     private readonly getAllEquipService: GetAllEquipmentService,
@@ -38,6 +40,7 @@ export class EquipmentController {
     private readonly removeEquipService: RemoveEquipmentService,
     private readonly getPaginateEquipService: GetPaginateEquipmentService,
     private readonly searchEquipmentService: FindEquipmentBySearchService,
+    private readonly addCategoryService: AddCategoryService,
   ) {}
 
   @Post()
@@ -90,6 +93,11 @@ export class EquipmentController {
     return this.searchEquipmentService.findEquipment(query);
   }
 
+  @Post('category')
+  addCategory(@Body() body: createCategoryDto) {
+    return this.addCategoryService.addEquipment(body);
+  }
+
   @Get(':id')
   // @Permission(['admin', 'user'])
   @Permission(['findOneEquipment'])
@@ -97,11 +105,10 @@ export class EquipmentController {
     return this.getEquipByIdService.getEquipment(+id);
   }
 
-  @Patch(':id')
+  @Patch('')
   // @Permission(['admin'])
   @Permission(['updateEquipment'])
   updateEquipment(
-    @Param('id') id: string,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
   ): Promise<GetEquipmentResDto> {
     return this.editEquipService.editEquipment(updateEquipmentDto);
