@@ -18,6 +18,7 @@ import { RolesPermission } from 'src/auth/entities/roles_permission.entity';
 import { Roles } from 'src/auth/entities/roles.entity';
 import { Permissions } from 'src/auth/entities/permissions.entity';
 import { RolesPermissionRepository } from 'src/auth/repository/rolesPermission.repository';
+import { AddCategoryService } from './services/addCategory.service';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { RolesPermissionRepository } from 'src/auth/repository/rolesPermission.r
     RemoveEquipmentService,
     GetPaginateEquipmentService,
     FindEquipmentBySearchService,
+    AddCategoryService,
   ],
   exports: [EquipmentRepository, CategoryRepository],
 })

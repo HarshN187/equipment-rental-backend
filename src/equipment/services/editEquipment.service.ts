@@ -22,6 +22,7 @@ export class editEquipmentService {
     const categoryData = await this.categoryRepo.getAsync(
       body.category ? body.category : 1,
     );
+    console.log(categoryData);
 
     if (!categoryData) {
       throw new DbException('data not found for this category');

@@ -68,11 +68,11 @@ export class RentalsController {
     );
   }
 
-  @Patch(':id')
+  @Patch('')
   // @Permission(['admin'])
   @Permission(['updateRental'])
   updateRental(
-    @Param('id') id: string,
+    // @Param('id') id: string,
     @Body() updateRentalDto: UpdateRentalDto,
   ): Promise<GetRentalResDto> {
     return this.editRentalService.editRental(updateRentalDto);

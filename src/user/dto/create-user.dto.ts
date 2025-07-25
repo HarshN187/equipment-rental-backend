@@ -8,7 +8,6 @@ export class CreateUserDto {
   // @ApiProperty()
   @IsOptional()
   @AutoMap()
-  @IsInt()
   user_id: number;
 
   @ApiProperty({
@@ -29,7 +28,8 @@ export class CreateUserDto {
     example: 'user',
   })
   @AutoMap()
-  @IsString()
+  // @IsString()
+  @IsOptional()
   role: RolesDto;
 
   @ApiProperty({
@@ -45,5 +45,6 @@ export class CreateUserDto {
   })
   @IsString()
   @AutoMap()
+  @IsOptional()
   password: string;
 }

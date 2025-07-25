@@ -33,7 +33,7 @@ import { GetAddressResDto } from './dto/getAddress.dto';
 
 @Controller('user')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class UserController {
   constructor(
     private readonly getUserByIdService: GetUserByIdService,
@@ -51,6 +51,7 @@ export class UserController {
   @Post()
   // @Permission(['user'])
   create(@Body() createUserDto: CreateUserDto): Promise<GetUserResDto> {
+    console.log(createUserDto);
     return this.createUserService.createUser(createUserDto);
   }
 
@@ -68,20 +69,26 @@ export class UserController {
     return this.getAllUserService.getAllUser();
   }
 
-  @Get('/:id/address')
+  @Get('/address/:id')
   @Permission(['getUserAddresses'])
   getUserAddresses(@Param('id') userId: string): Promise<GetAddressResDto[]> {
     return this.getUserAddressService.getUserAddresses(+userId);
   }
 
-  @Get('/pagination/:perPage/:page')
+  @Get('/pagination/:limit/:page')
   @Permission(['getUserPagination'])
   getUserWithPagination(
-    @Param('perPage') perPage: string,
+    @Param('limit') perPage: string,
     @Param('page') page: string,
     @Query('order') order: number,
-  ): Promise<GetUserResDto[]> {
-    return this.getUserPagination.getUserPagination(+page, +perPage, +order);
+    @Query('query') query: string,
+  ) {
+    return this.getUserPagination.getUserPagination(
+      +page,
+      +perPage,
+      +order,
+      query,
+    );
   }
 
   @Patch()

@@ -18,6 +18,12 @@ export class EquipmentDto {
   available: boolean;
 
   @AutoMap()
+  total_quntity: number;
+
+  @AutoMap()
+  available_quntity: number;
+
+  @AutoMap()
   category: categoryDto;
 
   @AutoMap()

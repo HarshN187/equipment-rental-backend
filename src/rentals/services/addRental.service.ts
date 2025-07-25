@@ -23,21 +23,29 @@ export class AddRentalService {
     const userData = await this.userRepo.getAsync(body.user);
 
     if (!userData) {
-      throw new DbException('data not found for this id');
+      throw new DbException('user not found for this id');
     }
 
     const equipData = await this.equipmentRepo.getAsync(body.equipment);
 
     if (!equipData) {
-      throw new DbException('data not found for this id');
+      throw new DbException('equip not found for this id');
     }
 
-    equipData.available = false;
+    if (equipData.available_quntity == 0) {
+      throw new DbException('equip not Available');
+    } else if (equipData.available_quntity - body.quantity == (1 || 0))
+      equipData.available = false;
+    else if (equipData.available_quntity - body.quantity < 0) {
+      throw new DbException('equip not Available in this quantity');
+    }
+
+    equipData.available_quntity -= body.quantity;
     const updateEquip = await this.equipmentRepo.updateAsync(equipData);
 
     const reqData = this.mapper.map(body, CreateRentalDto, RentalDto);
 
-    console.log(reqData);
+    reqData.status = reqData.status ? reqData.status : 'active';
 
     const data = await this.rentalRepo.createAsync({
       ...reqData,

@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsInt, IsString } from 'class-validator';
+import { IsBoolean, IsIn, IsInt, IsString } from 'class-validator';
 import { categoryDto } from './category.dto';
 
 export class CreateEquipmentDto {
@@ -29,11 +29,25 @@ export class CreateEquipmentDto {
   rent_per_day: number;
 
   @AutoMap()
-  @IsBoolean()
+  @IsInt()
   @ApiProperty({
-    example: true,
+    example: 10,
   })
-  available: boolean;
+  total_quntity: number;
+
+  // @AutoMap()
+  // @IsInt()
+  // @ApiProperty({
+  //   example: 10,
+  // })
+  // available_quntity: number;
+
+  // @AutoMap()
+  // @IsBoolean()
+  // @ApiProperty({
+  //   example: true,
+  // })
+  // available: boolean;
 
   @AutoMap()
   @ApiProperty({

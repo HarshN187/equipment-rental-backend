@@ -43,7 +43,7 @@ import { RolesPermissionRepository } from 'src/auth/repository/rolesPermission.r
     }),
     JwtModule.register({
       secret: 'hard!to-guess_secret',
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '24h' },
     }),
     LoggerModule.forRoot({
       pinoHttp: {

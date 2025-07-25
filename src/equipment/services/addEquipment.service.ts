@@ -25,6 +25,8 @@ export class AddEquipmentService {
     }
 
     const reqData = this.mapper.map(body, CreateEquipmentDto, EquipmentDto);
+    reqData.available_quntity = reqData.total_quntity;
+    reqData.available = true;
 
     const equipmentAdded = await this.equipmentRepo.createAsync({
       ...reqData,
