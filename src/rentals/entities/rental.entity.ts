@@ -27,9 +27,13 @@ export class Rental {
 
   @AutoMap()
   @Column()
-  start_date: Date;
+  quantity: number; 
 
   @AutoMap()
+  @Column()
+  start_date: Date;
+
+  @AutoMap()  
   @Column()
   end_date: Date;
 

@@ -19,6 +19,8 @@ export class getAllRentalService {
 
     const response = this.rentalRepo.mapToResponseArray(data);
 
+    
+
     return response;
   }
 }

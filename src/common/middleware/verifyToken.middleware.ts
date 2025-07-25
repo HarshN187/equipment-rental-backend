@@ -14,6 +14,8 @@ export class VeryfyTokenMiddleware implements NestMiddleware {
 
   use(@Req() req, @Res() res, @Next() next) {
     let token;
+
+    console.log(req.headers.authorization);
     if (req.headers.authorization) {
       token = req.headers.authorization.split(' ');
       try {

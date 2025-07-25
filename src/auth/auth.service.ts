@@ -13,7 +13,6 @@ export class AuthService {
   ) {}
 
   async loginUser(body: loginDto) {
-    console.log(body);
     const user = await this.userRepo.allAsyncWithJoin(
       { email: body.email },
       {
@@ -31,7 +30,7 @@ export class AuthService {
     );
 
     if (!match) {
-      throw new RpcBaseException('InValid Credentials', 401);
+      throw new RpcBaseException('InValid Credentials', 404);
     }
 
     const token = this.jwtService.sign({

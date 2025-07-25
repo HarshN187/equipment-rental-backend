@@ -20,7 +20,7 @@ import { Permissions } from './entities/permissions.entity';
       Permissions,
     ]),
     JwtModule.register({
-      secret: 'hard!to-guess_secret',
+      secret: 'hard!to-guess_secret', 
       signOptions: { expiresIn: '24h' },
     }),
   ],

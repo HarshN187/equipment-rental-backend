@@ -16,14 +16,20 @@ export class CreateUserService {
   ) {}
 
   async createUser(body: CreateUserDto): Promise<GetUserResDto> {
-    const encryptPassword = await bcrypt.hash(body.password, 10);
+    const encryptPassword = body.password
+      ? await bcrypt.hash(body.password, 10)
+      : null;
 
     body.password = encryptPassword;
 
     const reqData = this.mapper.map(body, CreateUserDto, UserDto);
-
+    reqData.role = reqData.role
+      ? reqData.role
+      : {
+          id: 2,
+          name: 'user',
+        };
     const result = await this.userRepo.createAsync(reqData);
-
     const response = this.userRepo.mapToResponse(result);
 
     return response;

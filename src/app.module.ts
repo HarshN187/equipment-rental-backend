@@ -29,6 +29,7 @@ import { VeryfyTokenMiddleware } from './common/middleware/verifyToken.middlewar
 import { RolesPermission } from './auth/entities/roles_permission.entity';
 import { Roles } from './auth/entities/roles.entity';
 import { Permissions } from './auth/entities/permissions.entity';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -48,6 +49,9 @@ import { Permissions } from './auth/entities/permissions.entity';
     }),
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
+    }),
+    MulterModule.register({
+      dest: './upload',
     }),
     JwtModule.register({
       secret: 'hard!to-guess_secret',
@@ -78,6 +82,6 @@ export class AppModule implements NestModule {
     consumer
       .apply(VeryfyTokenMiddleware)
       .exclude({ path: 'user', method: RequestMethod.POST })
-      .forRoutes('user', 'equipment', 'rentals');
+      .forRoutes('user', 'equipment', 'rentals', 'app');
   }
 }

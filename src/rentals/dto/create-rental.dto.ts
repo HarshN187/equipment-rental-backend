@@ -4,7 +4,7 @@ import { EquipmentDto } from 'src/equipment/dto/equipment.dto';
 import { UserDto } from 'src/user/dto/user.dto';
 
 export class CreateRentalDto {
-  @ApiProperty()
+  // @ApiProperty()
   @AutoMap()
   id: number;
 
@@ -27,6 +27,12 @@ export class CreateRentalDto {
   start_date: Date;
 
   @ApiProperty({
+    example: 1,
+  })
+  @AutoMap()
+  quantity: number;
+
+  @ApiProperty({
     example: new Date(Date.now() + 2),
   })
   @AutoMap()
@@ -45,13 +51,4 @@ export class CreateRentalDto {
   @AutoMap()
   //paid,unpaid
   payment_status: string;
-
-  //   @AutoMap()
-  //   created_at: Date;
-
-  //   @AutoMap()
-  //   updated_at: Date;
-
-  //   @AutoMap()
-  //   deleted_at: Date;
 }

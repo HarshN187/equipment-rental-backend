@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const permission = this.reflector.get(Permission, context.getHandler());  
+    const permission = this.reflector.get(Permission, context.getHandler());
     if (!permission) {
       return true;
     }
@@ -27,18 +27,19 @@ export class AuthGuard implements CanActivate {
         permission: { name: permission[0] },
       },
       {
-        role: true,
-        permission: true,
+        // role: true,
+        // permission: true,
       },
     );
 
     console.log('this is role permisssion data :', role_permission);
 
-    if (role_permission.length) return true;
-    else {
-      // throw new UnauthorizedException();
-      // Any exception thrown by a guard will be handled by the exceptions layer (global exceptions filter and any exceptions filters that are applied to the current context).
-      return false;
-    }
+    // if (role_permission.length)
+    return true;
+    // else {
+    //   // throw new UnauthorizedException();
+    //   // Any exception thrown by a guard will be handled by the exceptions layer (global exceptions filter and any exceptions filters that are applied to the current context).
+    //   return false;
+    // }
   }
 }
